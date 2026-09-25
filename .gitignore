@@ -2,3 +2,6 @@
 audio/originais/
 desktop.ini
 Thumbs.db
+
+# Token do GitHub (nunca enviar para o repositório)
+token-github.txt
