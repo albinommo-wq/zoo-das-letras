@@ -138,7 +138,7 @@ h1 span{color:var(--berry)}
 .chap .t{font-family:var(--display); font-weight:800; font-size:20px; line-height:1.15}
 .chap .d{font-size:14px; color:var(--ink2)}
 .chap .ok{margin-left:auto; font-size:22px}
-.scene{font-size:78px; line-height:1.1; text-align:center; min-height:96px; letter-spacing:4px}
+.scene{font-size:78px; line-height:1.1; text-align:center; min-height:96px; letter-spacing:4px; word-break:break-all; max-width:100%}
 .scene.in{animation:pop .6s}
 .narr{font-size:20px; line-height:1.5; padding:16px; text-align:left}
 .narr b{font-weight:700; color:var(--berry); letter-spacing:2px}
@@ -310,12 +310,88 @@ const CHAPTERS = [
       {clip:{id:'c2-16', scene:'🐓🏠✨', text:'Isso! Com o L, a placa diz GALO de novo. E o galo voltou todo feliz para casa.'}},
       {end:true, clip:{id:'c2-17', scene:'🌅🐓🎶', text:'Na manhã seguinte, ele cantou mais alto do que nunca: cocoricó! O galo vai morar no seu zoológico. Até a próxima aventura!'}},
     ]},
+  { n:3, title:'O lobo que queria brincar', letters:['B','E','D'], prize:['LOBO','BODE'],
+    steps:[
+      {clip:{id:'c3-01', scene:'🐹📖', text:'Oi, sou eu, a Pipoca! Hoje tem letra nova e bicho novo. Vamos conhecer as letras?'}},
+      {letter:'B', e:'🐳', clip:{id:'c3-02', text:'Essa é a letra B. Ela faz b, de BALEIA!', tts:'Essa é a letra bê. Ela faz bê, de baleia!', note:'Só o som curtinho do B, com os lábios se abrindo: b.'}},
+      {letter:'E', e:'🐘', clip:{id:'c3-03', text:'Essa é a letra E. Ela faz é, de ELEFANTE!', note:'E aberto e alongado: éé.'}},
+      {letter:'D', e:'🦖', clip:{id:'c3-04', text:'Essa é a letra D. Ela faz d, de DINOSSAURO!', tts:'Essa é a letra dê. Ela faz dê, de dinossauro!', note:'Só o som do D, com a língua atrás dos dentes: d.'}},
+      {review:true, clip:{id:'c3-05', text:'Agora você conhece o B, o E e o D. Cuidado: o B e o D parecem irmãos, mas a barriguinha fica de lados diferentes! Toque nelas para ouvir de novo.'}},
+      {clip:{id:'c3-06', scene:'🌲🌙🐺', text:'Lá no fundo do zoológico, perto das árvores, morava um lobo. Todo mundo achava que ele era bravo. Auuuu!', note:'Uivo de lobo longo e um pouco triste.'}},
+      {clip:{id:'c3-07', scene:'🐹🤫🐺', text:'Mas a Pipoca foi conversar com ele e descobriu um segredo: o lobo só queria um amigo para brincar!', note:'Tom de segredo, mais baixinho.'}},
+      {clip:{id:'c3-08', scene:'🪧❓', text:'Primeiro, ela precisava consertar a placa da casa dele. Faltava uma letra no meio!'}},
+      {stop:{word:'LOBO', e:'🐺', gap:2, options:['B','D','P'], clip:{id:'c3-09', text:'Qual letra falta para escrever LOBO?'}}},
+      {clip:{id:'c3-10', scene:'🐺😊', text:'Isso, é o LOBO! Ele abanou o rabo de tanta alegria.'}},
+      {clip:{id:'c3-11', scene:'🐐😨🪧', text:'O lobo queria brincar com o bode. Mas o bode ficou com medo e se escondeu atrás da placa dele. Méééé!', note:'Méééé tremido, de medo.'}},
+      {stop:{word:'BODE', e:'🐐', gap:0, options:['B','D','P'], clip:{id:'c3-12', text:'Qual letra falta para escrever BODE?'}}},
+      {clip:{id:'c3-13', scene:'🐐🪧', text:'Muito bem! Mas olha só, a placa do bode ainda está sem uma letra.'}},
+      {stop:{word:'BODE', e:'🐐', gap:2, options:['D','B','T'], clip:{id:'c3-14', text:'Qual letra falta no meio de BODE?'}}},
+      {clip:{id:'c3-15', scene:'🐐👀🐺', text:'O bode espiou e viu que o lobo tinha trazido uma coisa redonda e colorida para brincar.'}},
+      {stop:{word:'BOLA', e:'⚽', gap:3, options:['A','O','E'], clip:{id:'c3-16', text:'Qual letra falta no final de BOLA?'}}},
+      {clip:{id:'c3-17', scene:'⚽🐺🐐', text:'Era uma BOLA! O lobo chutou, o bode cabeceou, e os dois riram muito.', note:'Pode rir junto no final.'}},
+      {end:true, clip:{id:'c3-18', scene:'🐺💛🐐', text:'O bode descobriu que o lobo era bonzinho, e agora eles são melhores amigos. O lobo e o bode vão morar no seu zoológico!'}},
+    ]},
+  { n:4, title:'O coco lá no alto', letters:['C','M'], prize:['MACACO','CAMELO'],
+    steps:[
+      {clip:{id:'c4-01', scene:'🐹🌴☀️', text:'Olá! Hoje a aventura é num lugar bem quente. Primeiro, as letras novas!'}},
+      {letter:'C', e:'🐍', clip:{id:'c4-02', text:'Essa é a letra C. Ela faz c, de COBRA!', tts:'Essa é a letra cê. Ela faz cá, de cobra!', note:'Som de K, curtinho: c, como em casa, coco e cobra.'}},
+      {letter:'M', e:'🐒', clip:{id:'c4-03', text:'Essa é a letra M. Ela faz mmm, de MACACO!', tts:'Essa é a letra ême. Ela faz mmm, de macaco!', note:'Boca fechada, mmm, como quando uma comida é gostosa.'}},
+      {review:true, clip:{id:'c4-04', text:'Agora você conhece o C e o M. Toque nelas para ouvir de novo. Quando quiser, é só começar!'}},
+      {clip:{id:'c4-05', scene:'🐒🌴🌴', text:'No zoológico morava um macaco muito levado. Ele pulava de galho em galho o dia inteiro! Uh uh ah ah!', note:'Faça o som de macaco com bastante energia.'}},
+      {clip:{id:'c4-06', scene:'🤸🪧💥', text:'Mas numa cambalhota, ele derrubou a placa da casa dele. Vamos consertar?'}},
+      {stop:{word:'MACACO', e:'🐒', gap:0, options:['M','C','P'], clip:{id:'c4-07', text:'Qual letra falta para escrever MACACO?'}}},
+      {clip:{id:'c4-08', scene:'🐒🤤🌴', text:'É o MACACO! Ele estava com fome e olhou lá para o alto do coqueiro.'}},
+      {stop:{word:'COCO', e:'🥥', gap:0, options:['C','G','M'], clip:{id:'c4-09', text:'O que tem lá no alto? Qual letra falta para escrever COCO?'}}},
+      {clip:{id:'c4-10', scene:'🐒😩🥥', text:'O coco estava alto demais! O macaco pulou, pulou, pulou, e não conseguiu pegar.', note:'Acelere no "pulou, pulou, pulou" e desanime no final.'}},
+      {clip:{id:'c4-11', scene:'🐫🚶', text:'Aí chegou, bem devagarinho, um bicho alto com uma corcova grandona nas costas.'}},
+      {stop:{word:'CAMELO', e:'🐫', gap:2, options:['M','B','D'], clip:{id:'c4-12', text:'Qual letra falta no meio de CAMELO?'}}},
+      {clip:{id:'c4-13', scene:'🐫💬🐒', text:'O camelo disse: suba nas minhas costas, amigo macaco! E o macaco subiu bem no alto da corcova.', note:'Voz do camelo grave, calma e simpática.'}},
+      {clip:{id:'c4-14', scene:'🐒🥥✨', text:'Lá de cima, o macaco pegou o coco! Mas quando desceu, viu que a placa dele tinha perdido mais uma letra.'}},
+      {stop:{word:'MACACO', e:'🐒', gap:4, options:['C','G','T'], clip:{id:'c4-15', text:'Qual letra falta em MACACO?'}}},
+      {end:true, clip:{id:'c4-16', scene:'🐒🥥🐫', text:'O macaco dividiu o coco com o camelo, e os dois fizeram um lanche delicioso. O macaco e o camelo vão morar no seu zoológico!'}},
+    ]},
+  { n:5, title:'A sopa do sapo', letters:['R','S'], prize:['SAPO','RATO'],
+    steps:[
+      {clip:{id:'c5-01', scene:'🐹👃🍲', text:'Oi! Hoje alguém está cozinhando uma coisa bem cheirosa. Mas antes, as letras novas!'}},
+      {letter:'R', e:'🦏', clip:{id:'c5-02', text:'Essa é a letra R. Ela faz rrr, de RINOCERONTE!', tts:'Essa é a letra érre. Ela faz rrr, de rinoceronte!', note:'R forte, de começo de palavra: rrr.'}},
+      {letter:'S', e:'🐸', clip:{id:'c5-03', text:'Essa é a letra S. Ela faz sss, de SAPO!', tts:'Essa é a letra ésse. Ela faz sss, de sapo!', note:'Som de cobrinha: ssss.'}},
+      {review:true, clip:{id:'c5-04', text:'Agora você conhece o R e o S. Toque nelas para ouvir de novo. Quando quiser, é só começar!'}},
+      {clip:{id:'c5-05', scene:'🐸👨‍🍳🍲', text:'Perto do lago morava um bicho verde que adorava cozinhar. Hoje ele estava mexendo uma panela enorme. Croac!', note:'Croac bem de sapo.'}},
+      {stop:{word:'SAPO', e:'🐸', gap:0, options:['S','R','C'], clip:{id:'c5-06', text:'Qual letra falta para escrever SAPO?'}}},
+      {clip:{id:'c5-07', scene:'🐸🥄', text:'Isso, é o SAPO! E sabe o que ele estava fazendo na panela?'}},
+      {stop:{word:'SOPA', e:'🍲', gap:2, options:['P','B','D'], clip:{id:'c5-08', text:'Qual letra falta para escrever SOPA?'}}},
+      {clip:{id:'c5-09', scene:'🍲😔🐸', text:'Uma SOPA quentinha! Mas o sapo estava tristinho, porque não tinha ninguém para jantar com ele.'}},
+      {clip:{id:'c5-10', scene:'🐭👃✨', text:'De repente, apareceu um bichinho pequeno, de bigodes, farejando o cheirinho da sopa.', note:'Faça uma fungadinha de quem está farejando.'}},
+      {stop:{word:'RATO', e:'🐭', gap:0, options:['R','G','P'], clip:{id:'c5-11', text:'Olhe a figura! Qual letra falta para escrever RATO?'}}},
+      {clip:{id:'c5-12', scene:'🐭🐱🦆', text:'É o RATO! Viu só? Com R é RATO, com G é GATO, com P é PATO. Uma letrinha muda tudo!', note:'Destaque bem o primeiro som de cada palavra: rrr-ato, g-ato, p-ato.'}},
+      {clip:{id:'c5-13', scene:'🐸🐭🌹', text:'O sapo convidou o rato para jantar e enfeitou a mesa com uma flor vermelha.'}},
+      {stop:{word:'ROSA', e:'🌹', gap:0, options:['R','S','C'], clip:{id:'c5-14', text:'Qual letra falta para escrever ROSA?'}}},
+      {end:true, clip:{id:'c5-15', scene:'🐸🍲🐭', text:'O sapo e o rato tomaram sopa e conversaram até a lua aparecer. O sapo e o rato vão morar no seu zoológico!'}},
+    ]},
+  { n:6, title:'A festa na fazenda', letters:['V'], prize:['VACA','CAVALO'],
+    steps:[
+      {clip:{id:'c6-01', scene:'🐹🎉', text:'Oi! Hoje é um dia muito especial: vai ter festa! E para a festa, só falta conhecer mais uma letra.'}},
+      {letter:'V', e:'🐮', clip:{id:'c6-02', text:'Essa é a letra V. Ela faz vvv, de VACA!', tts:'Essa é a letra vê. Ela faz vvv, de vaca!', note:'Dentes de cima encostados no lábio de baixo, vibrando: vvv.'}},
+      {review:true, clip:{id:'c6-03', text:'Cuidado para não confundir o V com o B! Toque na letra para ouvir de novo. Quando quiser, é só começar!'}},
+      {clip:{id:'c6-04', scene:'🏡🐄🐴', text:'Na fazenda do zoológico moravam uma vaca e um cavalo. Eles resolveram fazer uma festa para todos os amigos! Muuu!', note:'Muuu de vaca, longo.'}},
+      {stop:{word:'VACA', e:'🐮', gap:0, options:['V','B','P'], clip:{id:'c6-05', text:'Qual letra falta para escrever VACA?'}}},
+      {clip:{id:'c6-06', scene:'🐴🪧', text:'Muito bem! Agora a placa do cavalo. Ele relinchou de alegria: iiirrííí!', note:'Relincho de cavalo.'}},
+      {stop:{word:'CAVALO', e:'🐴', gap:2, options:['V','B','T'], clip:{id:'c6-07', text:'Qual letra falta em CAVALO?'}}},
+      {clip:{id:'c6-08', scene:'🎂🐓🪺', text:'Para fazer o bolo da festa, eles precisavam de uma coisa que as galinhas guardam no ninho.'}},
+      {stop:{word:'OVO', e:'🥚', gap:1, options:['V','B','D'], clip:{id:'c6-09', text:'Qual letra falta para escrever OVO?'}}},
+      {clip:{id:'c6-10', scene:'🎂✨', text:'Com os ovos, eles fizeram um bolo enorme! E em cima do bolo, colocaram uma coisa que acende.'}},
+      {stop:{word:'VELA', e:'🕯️', gap:0, options:['V','B','T'], clip:{id:'c6-11', text:'Qual letra falta para escrever VELA?'}}},
+      {clip:{id:'c6-12', scene:'🦆🐱🐓🐺🐐<br>🐒🐫🐸🐭', text:'Todos os amigos chegaram: o pato, o gato, o galo, o lobo, o bode, o macaco, o camelo, o sapo e o rato!', note:'Fale a lista animado, como quem recebe os convidados.'}},
+      {clip:{id:'c6-13', scene:'💃🪧💥', text:'Mas com tanta dança, a placa do cavalo caiu de novo. Falta a última letra!'}},
+      {stop:{word:'CAVALO', e:'🐴', gap:5, options:['O','A','E'], clip:{id:'c6-14', text:'Qual letra falta no final de CAVALO?'}}},
+      {end:true, clip:{id:'c6-15', scene:'🎉🐹🎂', text:'Todo mundo cantou, dançou e comeu bolo. A Pipoca agradeceu a sua ajuda, porque sem você as placas nunca seriam consertadas! A vaca e o cavalo vão morar no seu zoológico. Parabéns, você completou todas as aventuras!', note:'Final de festa: bem feliz e caloroso.'}},
+    ]},
 ];
 const allClips = () => CHAPTERS.flatMap(c => c.steps.map(s => s.clip || s.stop.clip)).concat(GENERIC);
 
 // ---------- storage ----------
 const KEY = 'zoo-das-letras-v1';
-const blank = () => ({stickers:[], stars:{1:0,2:0,3:0}, words:{}, conf:{}, sessions:0, last:null, chapters:{}});
+const blank = () => ({stickers:[], stars:{1:0,2:0,3:0}, words:{}, conf:{}, sessions:0, last:null, chapters:{}, unlockAll:false});
 let data = blank();
 try { const raw = localStorage.getItem(KEY); if (raw) data = Object.assign(blank(), JSON.parse(raw)); } catch(e){}
 const save = () => { try { localStorage.setItem(KEY, JSON.stringify(data)); } catch(e){} };
@@ -602,7 +678,7 @@ const hl = t => esc(t).replace(/\b([A-ZÁÉÊÓ]{2,})\b/g, '<b>$1</b>');
 function storyList(){
   h(`<div class="screen">
     <div class="head"><button class="round-btn block press" id="back" aria-label="Voltar">←</button><h2>Histórias</h2></div>
-    ${CHAPTERS.map(c => { const open = c.n === 1 || data.chapters[c.n - 1];
+    ${CHAPTERS.map(c => { const open = c.n === 1 || data.chapters[c.n - 1] || data.unlockAll;
       return `<button class="chap block ${open ? 'press' : 'off'}" data-n="${c.n}" ${open ? '' : 'data-locked="1"'}>
       <div class="num">${c.n}</div>
       <div><div class="t">${esc(c.title)}</div><div class="d">${open ? 'Letras: ' + c.letters.join(' · ') : 'Termine o capítulo ' + (c.n - 1) + ' para abrir'}</div></div>
@@ -782,11 +858,17 @@ function parents(){
       <p>${!hasTTS ? 'Este navegador não tem leitura em voz alta. Tente no Chrome ou Safari.' : voice ? `Usando a voz: ${esc(voice.name)}.` : 'Nenhuma voz em português encontrada. No celular, instale a voz Português (Brasil) nas configurações de texto para fala.'}</p>
       <p>Os dados ficam só neste celular, neste navegador.</p>
     </div>
+    <div class="panel block">
+      <h3>Capítulos</h3>
+      <p>${data.unlockAll ? 'Todos os capítulos estão liberados.' : 'Cada capítulo abre quando o anterior termina, para as letras seguirem a ordem.'}</p>
+      <button class="small-btn block press" id="unlock">${data.unlockAll ? 'Voltar a liberar em ordem' : 'Liberar todos (para testar)'}</button>
+    </div>
     <div class="panel block" id="resetBox">
       <button class="small-btn block press danger" id="reset">Apagar progresso</button>
     </div>
   </div>`);
   document.getElementById('back').onclick = home;
+  document.getElementById('unlock').onclick = () => { data.unlockAll = !data.unlockAll; save(); parents(); };
   document.getElementById('reset').onclick = () => {
     document.getElementById('resetBox').innerHTML = `<p>Apagar estrelas, bichinhos e estatísticas? Não dá para desfazer.</p>
       <div style="display:flex;gap:10px;flex-wrap:wrap"><button class="small-btn block press danger" id="yes">Sim, apagar</button><button class="small-btn block press" id="no">Cancelar</button></div>`;
