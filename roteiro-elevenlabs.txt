@@ -1,0 +1,148 @@
+ROTEIRO PARA O ELEVENLABS - Zoo das Letras
+
+Gere um áudio por fala e salve com o nome indicado (ex.: c1-01.mp3).
+O texto abaixo já está ajustado para a voz sintética.
+
+=== Falas de acerto e erro ===
+
+g01.mp3
+Isso!
+
+g02.mp3
+Muito bem!
+
+g03.mp3
+Arrasou!
+
+g04.mp3
+Quase! Tenta de novo.
+
+g05.mp3
+Hmm, escuta outra vez e tenta de novo.
+
+
+=== Capítulo 1: A tempestade no zoológico ===
+
+c1-01.mp3
+Olá! Eu sou a Pipoca. Hoje vamos viver uma aventura no zoológico! Mas antes, vamos conhecer as letras da história.
+
+c1-02.mp3
+Essa é a letra A. Ela faz á, de arara!
+
+c1-03.mp3
+Essa é a letra O. Ela faz ó, de ovo!
+
+c1-04.mp3
+Essa é a letra pê. Ela faz pê, de pato!
+
+c1-05.mp3
+Essa é a letra gê. Ela faz guê, de gato!
+
+c1-06.mp3
+Agora você já conhece as letras A, O, P e G. Toque nelas para ouvir de novo. Quando quiser, é só começar a história!
+
+c1-07.mp3
+Era uma vez um zoológico muito alegre. Lá morava a Pipoca, uma hamster pequenininha que cuidava de todos os bichos.
+
+c1-08.mp3
+Numa noite, começou uma tempestade enorme! O vento soprou tão forte que derrubou as placas com os nomes dos animais.
+
+c1-09.mp3
+De manhã, os bichos estavam confusos e se esconderam. Sem as placas, ninguém sabia qual era a sua casa!
+
+c1-10.mp3
+A Pipoca achou a primeira placa perto do lago. Mas a primeira letra sumiu! Quem será que mora aqui? Quá, quá, quá!
+
+c1-11.mp3
+Qual letra falta para escrever pato?
+
+c1-12.mp3
+É o pato! Ele saiu de trás da moita batendo as asas, todo feliz.
+
+c1-13.mp3
+Depois, a Pipoca achou uma placa em cima do telhado. Miau! Essa placa também está sem a primeira letra.
+
+c1-14.mp3
+Qual letra falta para escrever gato?
+
+c1-15.mp3
+Muito bem, é o gato! Viu só? Trocando uma letrinha só, pato virou gato!
+
+c1-16.mp3
+Mas o vento ainda não tinha terminado a bagunça! A placa do pato perdeu mais uma letra, lá no finalzinho.
+
+c1-17.mp3
+Qual letra falta no final de pato?
+
+c1-18.mp3
+Isso! A placa do pato está consertada de novo.
+
+c1-19.mp3
+Faltava só a placa do gato. A letra do meio caiu dentro de uma poça de lama!
+
+c1-20.mp3
+Qual letra falta no meio de gato?
+
+c1-21.mp3
+Conseguimos! Todas as placas estão no lugar, e os bichos voltaram para casa.
+
+c1-22.mp3
+O pato e o gato ficaram tão felizes que viraram amigos. E o pato disse: obrigado pela ajuda! Quá, quá!
+
+c1-23.mp3
+Fim do primeiro capítulo! O pato e o gato vão morar no seu zoológico. Até a próxima aventura!
+
+
+=== Capítulo 2: O galo que não cantou ===
+
+c2-01.mp3
+Oi, sou eu de novo, a Pipoca! Hoje vamos conhecer duas letras novas.
+
+c2-02.mp3
+Essa é a letra éle. Ela faz lê, de leão!
+
+c2-03.mp3
+Essa é a letra tê. Ela faz tê, de tigre!
+
+c2-04.mp3
+Agora você conhece o L e o T. Toque nelas para ouvir de novo. Quando quiser, é só começar a história!
+
+c2-05.mp3
+Todo dia de manhã, o galo acordava o zoológico cantando: cocoricó! Mas hoje... só silêncio.
+
+c2-06.mp3
+A Pipoca foi até o galinheiro ver o que tinha acontecido. A placa estava lá, mas faltava a primeira letra.
+
+c2-07.mp3
+Qual letra falta para escrever galo?
+
+c2-08.mp3
+O galinheiro estava vazio! Só tinha umas peninhas e umas pegadas indo em direção à água.
+
+c2-09.mp3
+As pegadas levam até uma placa. Qual letra falta para escrever lago?
+
+c2-10.mp3
+No lago, lá estava o galo, sentado ao lado do pato, bem tristinho.
+
+c2-11.mp3
+O pato quis animar o amigo e mostrou a placa da casa dele. Mas uma letra tinha sumido!
+
+c2-12.mp3
+Qual letra falta no meio de pato?
+
+c2-13.mp3
+Aí o galo contou: depois da tempestade, a placa do galinheiro dizia gato! Ele achou que tinha perdido a casa para o gato.
+
+c2-14.mp3
+A Pipoca correu para arrumar a placa. Olha só: com a letra L, fica galo. Com a letra T, fica gato.
+
+c2-15.mp3
+Qual letra deixa a placa certinha para o galo?
+
+c2-16.mp3
+Isso! Com o L, a placa diz galo de novo. E o galo voltou todo feliz para casa.
+
+c2-17.mp3
+Na manhã seguinte, ele cantou mais alto do que nunca: cocoricó! O galo vai morar no seu zoológico. Até a próxima aventura!
+
