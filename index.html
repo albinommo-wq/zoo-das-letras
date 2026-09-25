@@ -192,7 +192,7 @@ const WORDS = [
 ];
 const LEVELS = [
   {id:1, name:'Letrinhas', desc:'Com qual letra começa?', ico:'A'},
-  {id:2, name:'Monta-palavra', desc:'Junte os pedacinhos', ico:'BA'},
+  {id:2, name:'Monta-palavra', desc:'Bichos, comidas e coisas', ico:'BA'},
   {id:3, name:'Eu leio!', desc:'Leia e ache o bicho', ico:'👀'},
 ];
 const LETTER_NAME = {A:'á',B:'bê',C:'cê',D:'dê',E:'é',F:'éfe',G:'gê',I:'i',J:'jóta',L:'éle',M:'ême',N:'ene',O:'ó',P:'pê',R:'érre',S:'ésse',T:'tê',U:'u',V:'vê'};
@@ -525,7 +525,7 @@ function home(){
     <button class="parents" id="pais" aria-label="Área dos pais: segure por um segundo"><div class="fill"></div><span>Área dos pais · segure</span></button>
   </div>`);
   document.getElementById('pipoca').onclick = () => speak('Oi! Eu sou a Pipoca. Escolha um jogo para a gente brincar!');
-  $app.querySelectorAll('.lvl').forEach(b => b.onclick = () => { tick(); start(+b.dataset.lv); });
+  $app.querySelectorAll('.lvl').forEach(b => b.onclick = () => { tick(); +b.dataset.lv === 2 ? packPicker() : start(+b.dataset.lv); });
   document.getElementById('zoo').onclick = () => { tick(); zoo(); };
   document.getElementById('stories').onclick = () => { tick(); unlockAudio(); storyList(); };
   const p = document.getElementById('pais'); let timer;
@@ -535,15 +535,65 @@ function home(){
   p.addEventListener('contextmenu', e => e.preventDefault());
 }
 
+// ---------- Monta-palavra: temas ----------
+// Palavras extras só do Monta-palavra (não entram no zoológico).
+const W = (w, s, e, g) => ({w, s, e, g});
+const EXTRA = {
+  bichos: [
+    W('GIRAFA',['GI','RA','FA'],'🦒','a'), W('ZEBRA',['ZE','BRA'],'🦓','a'), W('TIGRE',['TI','GRE'],'🐯','o'),
+    W('LEÃO',['LE','ÃO'],'🦁','o'), W('ABELHA',['A','BE','LHA'],'🐝','a'), W('POLVO',['POL','VO'],'🐙','o'),
+    W('PANDA',['PAN','DA'],'🐼','o'), W('GALINHA',['GA','LI','NHA'],'🐔','a'), W('PAVÃO',['PA','VÃO'],'🦚','o'),
+    W('PINGUIM',['PIN','GUIM'],'🐧','o'), W('TARTARUGA',['TAR','TA','RU','GA'],'🐢','a'), W('BORBOLETA',['BOR','BO','LE','TA'],'🦋','a'),
+  ],
+  comidas: [
+    W('BOLO',['BO','LO'],'🎂','o'), W('BANANA',['BA','NA','NA'],'🍌','a'), W('UVA',['U','VA'],'🍇','a'),
+    W('PERA',['PE','RA'],'🍐','a'), W('PIPOCA',['PI','PO','CA'],'🍿','a'), W('SUCO',['SU','CO'],'🧃','o'),
+    W('BATATA',['BA','TA','TA'],'🥔','a'), W('TOMATE',['TO','MA','TE'],'🍅','o'), W('CAFÉ',['CA','FÉ'],'☕','o'),
+    W('LEITE',['LEI','TE'],'🥛','o'), W('OVO',['O','VO'],'🥚','o'), W('SALADA',['SA','LA','DA'],'🥗','a'),
+    W('CENOURA',['CE','NOU','RA'],'🥕','a'), W('MELANCIA',['ME','LAN','CI','A'],'🍉','a'),
+  ],
+  coisas: [
+    W('BOLA',['BO','LA'],'⚽','a'), W('CASA',['CA','SA'],'🏠','a'), W('PIPA',['PI','PA'],'🪁','a'),
+    W('LUA',['LU','A'],'🌙','a'), W('DADO',['DA','DO'],'🎲','o'), W('CAMA',['CA','MA'],'🛏️','a'),
+    W('MALA',['MA','LA'],'🧳','a'), W('FADA',['FA','DA'],'🧚','a'), W('BOTA',['BO','TA'],'👢','a'),
+    W('MOTO',['MO','TO'],'🏍️','a'), W('SINO',['SI','NO'],'🔔','o'), W('FOGO',['FO','GO'],'🔥','o'),
+    W('VELA',['VE','LA'],'🕯️','a'), W('SAPATO',['SA','PA','TO'],'👞','o'), W('CANETA',['CA','NE','TA'],'🖊️','a'),
+    W('FOGUETE',['FO','GUE','TE'],'🚀','o'),
+  ],
+};
+const PACKS = [
+  {id:'bichos', name:'Bichos', e:'🐾', words: () => WORDS.concat(EXTRA.bichos)},
+  {id:'comidas', name:'Comidas', e:'🍌', words: () => EXTRA.comidas},
+  {id:'coisas', name:'Coisas', e:'⚽', words: () => EXTRA.coisas},
+  {id:'tudo', name:'Tudo misturado', e:'🎲', words: () => WORDS.concat(EXTRA.bichos, EXTRA.comidas, EXTRA.coisas)},
+];
+const ALL_WORDS = () => WORDS.concat(EXTRA.bichos, EXTRA.comidas, EXTRA.coisas);
+function packPicker(){
+  h(`<div class="screen">
+    <div class="head"><button class="round-btn block press" id="back" aria-label="Voltar">←</button><h2>Monta-palavra</h2></div>
+    <div class="prompt" style="text-align:left">Escolha um tema</div>
+    <div class="levels">${PACKS.map(p => `<button class="lvl block press l2" data-p="${p.id}">
+      <div class="ico" style="font-size:34px">${p.e}</div>
+      <div><div class="t">${p.name}</div><div class="d">${p.words().length} palavras</div></div></button>`).join('')}</div>
+  </div>`);
+  speak('Escolha um tema para montar palavras!');
+  document.getElementById('back').onclick = home;
+  $app.querySelectorAll('[data-p]').forEach(b => b.onclick = () => { tick(); start(2, b.dataset.p); });
+}
+
 // ---------- game ----------
 let G = null;
-function start(lv){
+function start(lv, pack){
   const L1 = WORDS.filter(w=>w.lv===1), L2 = WORDS.filter(w=>w.lv===2), L3 = WORDS.filter(w=>w.lv===3);
   let words;
   if (lv===1) words = pick(L1.concat(L2), ROUNDS);
+  else if (lv===2 && pack) {
+    // palavras menores primeiro: começa fácil e termina com as mais longas
+    words = pick(PACKS.find(p => p.id === pack).words(), ROUNDS).sort((a,b) => a.s.length - b.s.length);
+  }
   else if (lv===2) words = shuffle(pick(L1,3).concat(pick(L2,2)));
   else words = shuffle(pick(L1,2).concat(pick(L2,2), pick(L3,1)));
-  G = {lv, words, i:0, busy:false};
+  G = {lv, pack, words, i:0, busy:false};
   round();
 }
 function bar(){
@@ -592,7 +642,7 @@ function roundLetter(word){
 }
 
 function roundBuild(word){
-  const others = WORDS.filter(w=>w!==word).flatMap(w=>w.s).filter(s=>!word.s.includes(s));
+  const others = ALL_WORDS().filter(w=>w!==word).flatMap(w=>w.s).filter(s=>!word.s.includes(s));
   const chips = shuffle(word.s.map((s,k)=>({s,k})).concat([{s:pick(others,1)[0], k:-1}]));
   let next = 0;
   const say = () => speak(`Vamos montar: ${wordSay(word)}.`);
@@ -668,7 +718,7 @@ function reward(){
     </div>
   </div>`);
   document.getElementById('z').onclick = zoo;
-  document.getElementById('again').onclick = () => start(G.lv);
+  document.getElementById('again').onclick = () => start(G.lv, G.pack);
   document.getElementById('home').onclick = home;
 }
 
@@ -818,7 +868,7 @@ function zoo(){
 
 // ---------- parents ----------
 function parents(){
-  const rows = WORDS.map(w => ({w, r: data.words[w.w] || {ok:0, err:0}})).filter(x => x.r.ok + x.r.err > 0)
+  const rows = ALL_WORDS().map(w => ({w, r: data.words[w.w] || {ok:0, err:0}})).filter(x => x.r.ok + x.r.err > 0)
     .sort((a,b) => (b.r.err/(b.r.ok+b.r.err)) - (a.r.err/(a.r.ok+a.r.err)));
   const conf = Object.entries(data.conf).sort((a,b)=>b[1]-a[1]).slice(0,6);
   const pill = (r) => { const t = r.ok + r.err, p = r.ok / t;
