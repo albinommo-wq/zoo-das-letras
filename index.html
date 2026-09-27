@@ -304,7 +304,7 @@ const LEVELS = [
 ];
 const LETTER_NAME = {A:'á',B:'bê',C:'cê',D:'dê',E:'é',F:'éfe',G:'gê',I:'i',J:'jóta',L:'éle',M:'ême',N:'ene',O:'ó',P:'pê',R:'érre',S:'ésse',T:'tê',U:'u',V:'vê'};
 const LETTERS = 'ABCDEFGIJLMOPRSTUV'.split('');
-const PRAISE = ['Muito bem!','Isso aí!','Uau, que esperta!','Arrasou!','Perfeito!'];
+const PRAISE = ['elogio-1','elogio-2','elogio-3','elogio-4','elogio-5'];
 const ROUNDS = 5;
 
 // ---------- recorded audio (filled in when Thiago sends his recordings) ----------
@@ -516,7 +516,7 @@ if (hasTTS){ pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
 function speak(text, {cancel=true, rate=0.85} = {}){
   if (!hasTTS) return;
   try {
-    if (cancel) speechSynthesis.cancel();
+    if (cancel){ playToken++; try { player.pause(); } catch(e){} speechSynthesis.cancel(); }
     const u = new SpeechSynthesisUtterance(text);
     u.lang = 'pt-BR'; u.rate = rate; u.pitch = 1.15;
     if (voice) u.voice = voice;
@@ -525,6 +525,104 @@ function speak(text, {cancel=true, rate=0.85} = {}){
 }
 const sylSay = s => s.toLowerCase().replace(/a$/,'á').replace(/e$/,'ê').replace(/o$/,'ô');
 const wordSay = w => w.w.toLowerCase();
+
+// ---------- falas em peças (para a voz gravada) ----------
+// Cada fala é uma lista de peças: frases fixas, palavras, sílabas e letras.
+// Com gravação da peça (audio/<id>.mp3 listado em audio/lista.json), toca o arquivo; sem, usa a voz do celular.
+const PHRASES = {
+  // gerais
+  'geral-oi':'Oi! Eu sou a Pipoca. Escolha um jogo para a gente brincar!',
+  'geral-isso':'Isso!', 'geral-quase':'Quase!', 'geral-opa':'Opa!',
+  'geral-tenta-de-novo':'Tenta de novo!', 'geral-escuta':'Escuta:', 'geral-escuta-de-novo':'Escuta de novo:',
+  'geral-esse-e-o':'Esse é o', 'geral-essa-e-a':'Essa é a', 'geral-essa-e-a-letra':'Essa é a letra',
+  'geral-procure-o':'Procure o', 'geral-agora-e-o':'Ainda não! Agora é o', 'geral-de':'de', 'geral-e':'e', 'geral-na-ordem':'na ordem!',
+  'elogio-1':'Muito bem!', 'elogio-2':'Isso aí!', 'elogio-3':'Uau, mandou bem!', 'elogio-4':'Arrasou!', 'elogio-5':'Perfeito!',
+  // prêmio e zoológico
+  'premio-ganhou-o':'Parabéns! Você ganhou o', 'premio-ganhou-a':'Parabéns! Você ganhou a',
+  'premio-mora-ele':'Ele vai morar no seu zoológico.', 'premio-mora-ela':'Ela vai morar no seu zoológico.',
+  'premio-completo':'Parabéns! Você já tem todos os bichinhos. Ganhou mais uma estrela!',
+  'zoo-escondido':'Esse bichinho ainda está escondido. Jogue para descobrir!',
+  'hist-fechada':'Essa aventura ainda está fechada. Termine o capítulo anterior primeiro!',
+  // menus
+  'menu-monta':'Escolha um tema para montar palavras!',
+  'menu-vogais':'Estas são as vogais: a, e, i, o, u. Toque numa delas para ouvir, ou escolha uma brincadeira!',
+  'menu-corrida':'Escolha a corrida!', 'menu-memoria':'Escolha o jogo da memória!',
+  // Letrinhas, Monta-palavra, Eu leio
+  'letrinhas-pergunta':'começa com qual letra?',
+  'monta-vamos':'Vamos montar:', 'monta-hmm':'Hmm, escuta:',
+  'ler-instrucao':'Leia a palavra e toque no bicho certo.',
+  // Mundo das Vogais
+  'ligar-instrucao':'Ligue cada vogal ao desenho que começa com ela.', 'ligar-fim':'Muito bem! Você ligou todas!',
+  'baloes-instrucao':'Estoure os balões com a letra', 'baloes-fim':'Isso! Você achou todos os',
+  'caca-instrucao':'Toque em todas as vogais de', 'caca-nao-vogal':'Essa não é vogal.',
+  'caca-nao-vogal-longo':'Essa não é vogal. As vogais são: a, e, i, o, u.',
+  'caca-tem-1':'tem uma vogal!', 'caca-tem-2':'tem duas vogais!', 'caca-tem-3':'tem três vogais!', 'caca-tem-4':'tem quatro vogais!', 'caca-tem-5':'tem cinco vogais!',
+  // Corrida
+  'corrida-vogais':'Pegue as vogais na ordem: a, e, i, o, u!', 'corrida-so-vogais':'Pegue só as vogais e desvie das outras letras!',
+  'corrida-palavra':'Pegue as letras de', 'corrida-nao-vogal':'não é vogal.',
+  'corrida-chegou':'Chegou! Que corrida!', 'corrida-chegou-palavra':'Chegou! Você formou',
+  // Tambor
+  'tambor-instrucao':'Bata no tambor uma vez para cada pedacinho!',
+  'tambor-1':'Um pedacinho!', 'tambor-2':'Dois pedacinhos!', 'tambor-3':'Três pedacinhos!', 'tambor-4':'Quatro pedacinhos!',
+  'tambor-demais':'Opa, bateu demais!', 'tambor-faltou':'Faltou pedacinho!', 'tambor-de-novo':'Vamos de novo.',
+  'tambor-olha':'Olha a Pipoca:', 'tambor-sua-vez':'Agora é a sua vez!',
+  // Rima
+  'rima-pergunta':'Rima?', 'rima-terminam':'terminam igual:', 'rima-nao-rimam':'não rimam. O final é diferente.',
+  'rima-os-dois':'Os dois terminam com', 'rima-rimam':'Rimam!', 'rima-diferente':'O final é diferente, então não rimam.',
+  'rima-fim-ato':'ato', 'rima-fim-ao':'ão', 'rima-fim-elha':'elha', 'rima-fim-alo':'alo', 'rima-fim-ota':'ota',
+  'rima-fim-eijo':'eijo', 'rima-fim-ela':'ela', 'rima-fim-ata':'ata', 'rima-fim-oco':'oco',
+  // Alimente o bicho
+  'alimente-macaco':'O macaco só come coisas que começam com ême. Arraste a comida até ele!',
+  'alimente-bode':'O bode só come coisas que começam com bê. Arraste a comida até ele!',
+  'alimente-pato':'O pato só come coisas que começam com pê. Arraste a comida até ele!',
+  'alimente-lobo':'O lobo só come coisas que começam com éle. Arraste a comida até ele!',
+  'alimente-sapo':'O sapo só come coisas que começam com ésse. Arraste a comida até ele!',
+  'alimente-so-macaco':'O macaco só come ême!', 'alimente-so-bode':'O bode só come bê!', 'alimente-so-pato':'O pato só come pê!',
+  'alimente-so-lobo':'O lobo só come éle!', 'alimente-so-sapo':'O sapo só come ésse!',
+  'alimente-cheio-macaco':'O macaco está de barriga cheia!', 'alimente-cheio-bode':'O bode está de barriga cheia!',
+  'alimente-cheio-pato':'O pato está de barriga cheia!', 'alimente-cheio-lobo':'O lobo está de barriga cheia!',
+  'alimente-cheio-sapo':'O sapo está de barriga cheia!',
+  'alimente-nham':'Nham!', 'alimente-eca':'Eca!', 'alimente-comeca-com':'começa com',
+  // Memória
+  'memoria-desenho':'Vire as cartas e ache os pares: a letra e o desenho que começa com ela!',
+  'memoria-minuscula':'Vire as cartas e ache os pares: a letra grande e a letra pequena!',
+  'memoria-fim':'Você achou todos os pares!',
+  // Trem
+  'trem-monte':'Monte', 'trem-partir':'nos vagões e faça o trem partir!', 'trem-piui':'Piuí!',
+  // Traçar
+  'tracar-pinte':'Pinte a letra', 'tracar-dedo':'com o dedo!', 'tracar-dentro':'Tenta pintar só dentro da letra!',
+  'tracar-fim':'Muito bem! Essa é a letra',
+  // Pescaria
+  'pesca-instrucao':'Pesque as letras de', 'pesca-fim':'Você pescou',
+};
+const slug = t => t.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+const SYL_ID = {}; // sílaba escrita → id do arquivo (acentos viram sufixo para não colidir: RÉ → silaba-re-agudo)
+function sylId(s){
+  if (SYL_ID[s]) return SYL_ID[s];
+  const acc = /[ÁÉÍÓÚ]/.test(s) ? '-agudo' : /[ÂÊÔ]/.test(s) ? '-circunflexo' : /[ÃÕ]/.test(s) ? '-til' : '';
+  return SYL_ID[s] = 'silaba-' + slug(s) + acc;
+}
+const P = id => { if (!(id in PHRASES)) console.warn('frase sem texto', id); return {id, text: PHRASES[id] || id}; };
+const WD = w => { const t = typeof w === 'string' ? w : w.w; return {id: 'palavra-' + slug(t), text: t.toLowerCase()}; };
+const SY = s => ({id: sylId(s), text: sylSay(s)});
+const LT = l => ({id: 'letra-' + slug(l), text: letterName(l)});
+let REC = new Set();
+try { fetch('audio/lista.json', {cache:'no-cache'}).then(r => r.ok ? r.json() : []).then(a => { REC = new Set(a); }).catch(() => {}); } catch(e){}
+const srcFor = id => REC.has(id) ? `audio/${id}.mp3` : (AUDIO[id] || null);
+function playSrc(src, tok){
+  return new Promise(res => {
+    const done = () => { player.onended = player.onerror = null; res(); };
+    player.onended = done; player.onerror = done; player.src = src;
+    player.play().catch(done);
+  });
+}
+function talk(parts, opts = {}){
+  parts = parts.filter(Boolean).map(p => typeof p === 'string' ? P(p) : p);
+  if (!parts.some(p => srcFor(p.id))){ speak(parts.map(p => p.text).join(' '), opts); return; }
+  stopAll(); const tok = playToken;
+  (async () => { for (const p of parts){ if (tok !== playToken) return; const src = srcFor(p.id); if (src) await playSrc(src, tok); else await sayP(p.text, opts.rate || 0.9); } })();
+}
+const sylParts = w => w.s.map(SY);
 
 // Plays a clip: the recorded file if there is one, otherwise the phone voice. Resolves when done.
 const player = new Audio();
@@ -553,7 +651,7 @@ function sayP(text, rate=0.9){
 function playClip(clip){
   const tok = ++playToken;
   if (hasTTS) try { speechSynthesis.cancel(); } catch(e){}
-  const src = AUDIO[clip.id];
+  const src = srcFor(clip.id);
   if (!src) return sayP(clip.tts || clip.text.replace(/\b([A-ZÁÉÊÓ]{2,})\b/g, m => m.toLowerCase()));
   return new Promise(res => {
     const done = () => { player.onended = player.onerror = null; res(); };
@@ -639,7 +737,7 @@ function home(){
     <button class="zoo-btn block press" id="zoo">🐾 Meu zoológico · ${n}/${WORDS.length}</button>
     <button class="parents" id="pais" aria-label="Área dos pais: segure por um segundo"><div class="fill"></div><span>Área dos pais · segure</span></button>
   </div>`);
-  document.getElementById('pipoca').onclick = () => speak('Oi! Eu sou a Pipoca. Escolha um jogo para a gente brincar!');
+  document.getElementById('pipoca').onclick = () => talk(['geral-oi']);
   $app.querySelectorAll('.lvl').forEach(b => b.onclick = () => { tick(); +b.dataset.lv === 2 ? packPicker() : start(+b.dataset.lv); });
   document.getElementById('zoo').onclick = () => { tick(); zoo(); };
   document.getElementById('stories').onclick = () => { tick(); unlockAudio(); storyList(); };
@@ -693,7 +791,7 @@ function packPicker(){
       <div class="ico" style="font-size:34px">${p.e}</div>
       <div><div class="t">${p.name}</div><div class="d">${p.words().length} palavras</div></div></button>`).join('')}</div>
   </div>`);
-  speak('Escolha um tema para montar palavras!');
+  talk(['menu-monta']);
   document.getElementById('back').onclick = home;
   $app.querySelectorAll('[data-p]').forEach(b => b.onclick = () => { tick(); start(2, b.dataset.p); });
 }
@@ -725,10 +823,10 @@ function vowelMenu(){
       <div><div class="t">${a.name}</div><div class="d">${a.desc}</div></div>
       <div class="stars">⭐ ${data.stars[a.lv]||0}</div></button>`).join('')}</div>
   </div>`);
-  speak('Estas são as vogais: a, e, i, o, u. Toque numa delas para ouvir, ou escolha uma brincadeira!');
+  talk(['menu-vogais']);
   document.getElementById('back').onclick = home;
   $app.querySelectorAll('.vrow button').forEach(b => b.onclick = () => {
-    const v = b.dataset.v, w = VWORDS[v][0]; speak(`${VNAME[v]}... ${VNAME[v]}, de ${w.w.toLowerCase()}!`);
+    const v = b.dataset.v, w = VWORDS[v][0]; talk([LT(v), 'geral-de', WD(w)]);
     b.classList.remove('shake'); void b.offsetWidth;
   });
   $app.querySelectorAll('.lvl').forEach(b => b.onclick = () => { tick(); start(+b.dataset.lv); });
@@ -738,16 +836,16 @@ function vowelRounds(lv){
   if (lv === 5) return shuffle(VOWELS);
   return pick(ALL_WORDS().filter(w => w.w.length <= 7), ROUNDS);
 }
-function nextRound(text){
+function nextRound(parts){
   G.busy = true; ding(); confetti();
-  setTimeout(() => speak(text), 150);
+  setTimeout(() => talk(parts), 150);
   setTimeout(() => { G.i++; G.busy = false; G.i < G.words.length ? round() : reward(); }, 2300);
 }
 
 function roundMatch(set){
   const vs = shuffle(set.map(x => x.v)), ps = shuffle(set);
   let selV = null, selP = null, done = 0;
-  const say = () => speak('Ligue cada vogal ao desenho que começa com ela.');
+  const say = () => talk(['ligar-instrucao']);
   h(`<div class="screen">${bar()}
     <div class="prompt">Ligue cada vogal ao desenho que começa com ela</div>
     <div class="match block" id="board">
@@ -770,22 +868,22 @@ function roundMatch(set){
       svg.appendChild(ln);
       const wl = selP.querySelector('.wl'); wl.innerHTML = `<b>${esc(word.w[0])}</b>${esc(word.w.slice(1))}`; wl.hidden = false;
       selV.classList.add('mdone'); selP.classList.add('mdone'); tick();
-      speak(`${VNAME[v]}, de ${word.w.toLowerCase()}!`);
+      talk([LT(v), 'geral-de', WD(word)]);
       clear(); done++;
-      if (done === set.length) setTimeout(() => nextRound('Muito bem! Você ligou todas!'), 1300);
+      if (done === set.length) setTimeout(() => nextRound(['ligar-fim']), 1300);
     } else {
       G.firstTry = false; boop(); shakeEl(selV); shakeEl(selP); recConf(`vogais: ${base(word.w[0])}→${v}`);
-      speak(`Escuta: ${word.w.toLowerCase()}... ${word.w.toLowerCase()}. Tenta de novo!`);
+      talk(['geral-escuta', WD(word), WD(word), 'geral-tenta-de-novo']);
       clear();
     }
   };
   $app.querySelectorAll('.mv').forEach(b => b.onclick = () => {
     if (G.busy) return; $app.querySelectorAll('.mv.msel').forEach(e => e.classList.remove('msel'));
-    selV = b; b.classList.add('msel'); speak(VNAME[b.dataset.v]); tryMatch();
+    selV = b; b.classList.add('msel'); talk([LT(b.dataset.v)]); tryMatch();
   });
   $app.querySelectorAll('.mp').forEach(b => b.onclick = () => {
     if (G.busy) return; $app.querySelectorAll('.mp.msel').forEach(e => e.classList.remove('msel'));
-    selP = b; b.classList.add('msel'); if (!selV) speak(ps.find(p => p.v === b.dataset.v).word.w.toLowerCase()); tryMatch();
+    selP = b; b.classList.add('msel'); if (!selV) talk([WD(ps.find(p => p.v === b.dataset.v).word)]); tryMatch();
   });
 }
 
@@ -794,7 +892,7 @@ function roundBalloons(v){
   const letters = shuffle([v, v, v].concat(Array.from({length:6}, () => pick(others,1)[0])));
   const cols = ['#EF5B8C','#2FA56A','#4FA3D9','#E08A00','#8A63D2'];
   let found = 0, warned = false;
-  const say = () => speak(`Estoure os balões com a letra ${VNAME[v]}!`);
+  const say = () => talk(['baloes-instrucao', LT(v)]);
   h(`<div class="screen">${bar()}
     <div class="stage block" style="padding:12px">
       <div class="target"><div class="bigv">${v}</div><div class="cnt" id="cnt">0 de 3</div></div>
@@ -809,10 +907,10 @@ function roundBalloons(v){
     if (l === v){
       b.classList.add('popped'); tone([880,1320], .07, 'square', .08); found++;
       document.getElementById('cnt').textContent = `${found} de 3`;
-      if (found === 3) nextRound(`Isso! Você achou todos os ${VNAME[v]}!`); else speak(VNAME[v]);
+      if (found === 3) nextRound(['baloes-fim', LT(v)]); else talk([LT(v)]);
     } else {
       G.firstTry = false; boop(); shakeEl(b); recConf(`balões: ${v}→${l}`);
-      speak(warned ? `Esse é o ${VNAME[l]}.` : `Esse é o ${VNAME[l]}. Procure o ${VNAME[v]}!`); warned = true;
+      talk(warned ? ['geral-esse-e-o', LT(l)] : ['geral-esse-e-o', LT(l), 'geral-procure-o', LT(v)]); warned = true;
     }
   });
 }
@@ -821,7 +919,7 @@ function roundHunt(word){
   const letters = word.w.split('');
   const need = letters.filter(isVowel).length;
   let got = 0, warned = false;
-  const say = () => speak(`Toque em todas as vogais de ${word.w.toLowerCase()}.`);
+  const say = () => talk(['caca-instrucao', WD(word)]);
   h(`<div class="screen">${bar()}
     <div class="stage block">
       <button class="pet" id="pet" aria-label="Ouvir">${word.e}</button>
@@ -835,15 +933,15 @@ function roundHunt(word){
     if (G.busy || b.classList.contains('right')) return;
     const c = letters[+b.dataset.i];
     if (isVowel(c)){
-      b.classList.add('right'); tick(); got++; speak(VNAME[base(c)]);
+      b.classList.add('right'); tick(); got++; talk([LT(base(c))]);
       document.getElementById('cnt').textContent = `${got} de ${need}`;
       if (got === need){
         const pet = document.getElementById('pet'); pet.classList.add('pop');
-        nextRound(`Isso! ${word.w.toLowerCase()} tem ${need === 1 ? 'uma vogal' : need + ' vogais'}!`);
+        nextRound(['geral-isso', WD(word), 'caca-tem-' + Math.min(need, 5)]);
       }
     } else {
       G.firstTry = false; boop(); shakeEl(b); recConf(`caça-vogais: ${c}`);
-      speak(warned ? 'Essa não é vogal.' : 'Essa não é vogal. As vogais são: a, e, i, o, u.'); warned = true;
+      talk([warned ? 'caca-nao-vogal' : 'caca-nao-vogal-longo']); warned = true;
     }
   });
 }
@@ -890,7 +988,7 @@ function modeMenu(title, modes, onPick, speech){
       <div class="ico" style="font-size:32px">${m.e}</div>
       <div><div class="t">${esc(m.name)}</div><div class="d">${esc(m.desc)}</div></div></button>`).join('')}</div>
   </div>`);
-  if (speech) speak(speech);
+  if (speech) talk([speech]);
   document.getElementById('back').onclick = gamesMenu;
   $app.querySelectorAll('[data-m]').forEach(b => b.onclick = () => { tick(); onPick(b.dataset.m); });
 }
@@ -912,9 +1010,8 @@ function roundRace(r){
   const got = [];
   const total = r.any ? r.need : r.target.length;
   const needNow = () => r.any ? null : r.target[got.length];
-  const intro = r.any ? 'Pegue só as vogais e desvie das outras letras!' :
-    r.word ? `Pegue as letras de ${r.word.w.toLowerCase()}, na ordem!` : 'Pegue as vogais na ordem: a, e, i, o, u!';
-  const say = () => speak(intro);
+  const intro = r.any ? ['corrida-so-vogais'] : r.word ? ['corrida-palavra', WD(r.word), 'geral-na-ordem'] : ['corrida-vogais'];
+  const say = () => talk(intro);
   h(`<div class="screen">${bar()}
     <div class="rtarget block">${r.word ? `<span class="re">${r.word.e}</span>` : ''}
       ${Array.from({length: total}, (_, k) => `<span class="rslot" id="rs${k}">${r.any ? '' : (r.word ? '' : r.target[k])}</span>`).join('')}</div>
@@ -959,10 +1056,10 @@ function roundRace(r){
     it.hit = true; it.el.classList.add('rgot');
     const k = got.length; got.push(it.letter);
     const slot = document.getElementById('rs' + k); slot.textContent = it.letter; slot.classList.add('on');
-    tone([700 + k*90, 1000 + k*90], .07, 'triangle', .1); speak(letterName(it.letter));
+    tone([700 + k*90, 1000 + k*90], .07, 'triangle', .1); talk([LT(it.letter)]);
     if (got.length === total){
       done = true; stopLoop(); window.removeEventListener('keydown', onKey);
-      nextRound(r.word ? `Chegou! Você formou ${r.word.w.toLowerCase()}!` : 'Chegou! Que corrida!');
+      nextRound(r.word ? ['corrida-chegou-palavra', WD(r.word)] : ['corrida-chegou']);
     }
   };
   const bump = it => {
@@ -971,8 +1068,8 @@ function roundRace(r){
     const now = performance.now();
     if (now - lastTalk > 2200){
       lastTalk = now;
-      if (r.any) speak(`Opa! ${letterName(it.letter)} não é vogal.`);
-      else speak(`Ainda não! Agora é o ${letterName(needNow())}.`);
+      if (r.any) talk(['geral-opa', LT(it.letter), 'corrida-nao-vogal']);
+      else talk(['geral-agora-e-o', LT(needNow())]);
     }
     recConf(`corrida: ${r.any ? 'vogal' : needNow()}→${it.letter}`);
   };
@@ -998,7 +1095,7 @@ function roundRace(r){
 function roundDrum(word){
   const n = word.s.length;
   let taps = 0, errs = 0, timer = null, demo = false;
-  const say = () => speak(`${word.w.toLowerCase()}. Bata no tambor uma vez para cada pedacinho!`);
+  const say = () => talk([WD(word), 'tambor-instrucao']);
   h(`<div class="screen">${bar()}
     <div class="stage block">
       <button class="pet" id="pet" aria-label="Ouvir">${word.e}</button>
@@ -1007,27 +1104,27 @@ function roundDrum(word){
     </div>
     <button class="drum" id="drum" aria-label="Tambor">🥁</button>
   </div>`);
-  wireBar(say); document.getElementById('pet').onclick = () => speak(word.w.toLowerCase()); say();
+  wireBar(say); document.getElementById('pet').onclick = () => talk([WD(word)]); say();
   const drum = document.getElementById('drum');
   const light = k => { const e = document.getElementById('sy' + k); if (e) e.classList.add('on'); };
   const reset = () => { taps = 0; $app.querySelectorAll('.syl').forEach(e => e.classList.remove('on', 'over')); };
   const beat = () => { drum.classList.remove('hit'); void drum.offsetWidth; drum.classList.add('hit'); tone([150, 110], .09, 'sine', .35); };
   const evaluate = () => {
-    if (taps === n){ G.busy = true; nextRound(`Isso! ${word.s.map(sylSay).join(', ')}. ${n === 1 ? 'Um pedacinho' : n + ' pedacinhos'}!`); return; }
+    if (taps === n){ G.busy = true; nextRound(['geral-isso', ...sylParts(word), 'tambor-' + n]); return; }
     G.firstTry = false; errs++; boop();
-    const msg = taps > n ? 'Opa, bateu demais!' : 'Faltou pedacinho!';
-    if (errs >= 2) runDemo(msg); else { speak(msg + ' Vamos de novo.'); setTimeout(reset, 900); }
+    const msg = taps > n ? 'tambor-demais' : 'tambor-faltou';
+    if (errs >= 2) runDemo(msg); else { talk([msg, 'tambor-de-novo']); setTimeout(reset, 900); }
   };
   const runDemo = msg => {
-    demo = true; reset(); speak(`${msg} Olha a Pipoca:`);
+    demo = true; reset(); talk([msg, 'tambor-olha']);
     document.getElementById('dp').textContent = 'Olha a Pipoca batendo…';
-    word.s.forEach((s, k) => setTimeout(() => { beat(); light(k); speak(sylSay(s), {rate:.75}); }, 1600 + k*900));
-    setTimeout(() => { reset(); demo = false; errs = 0; document.getElementById('dp').textContent = 'Agora é a sua vez!'; speak('Agora é a sua vez!'); }, 1600 + n*900 + 900);
+    word.s.forEach((s, k) => setTimeout(() => { beat(); light(k); talk([SY(s)], {rate:.75}); }, 1600 + k*900));
+    setTimeout(() => { reset(); demo = false; errs = 0; document.getElementById('dp').textContent = 'Agora é a sua vez!'; talk(['tambor-sua-vez']); }, 1600 + n*900 + 900);
   };
   drum.onclick = () => {
     if (G.busy || demo) return;
     beat(); taps++;
-    if (taps <= n){ light(taps - 1); speak(sylSay(word.s[taps - 1])); }
+    if (taps <= n){ light(taps - 1); talk([SY(word.s[taps - 1])]); }
     else $app.querySelectorAll('.syl').forEach(e => e.classList.add('over'));
     clearTimeout(timer); timer = setTimeout(evaluate, 1400);
   };
@@ -1054,7 +1151,7 @@ function rhymeRounds(){
 }
 function roundRhyme(r){
   const la = r.a.w.toLowerCase(), lb = r.b.w.toLowerCase();
-  const say = () => speak(`${la}... ${lb}. Rima?`);
+  const say = () => talk([WD(r.a), WD(r.b), 'rima-pergunta']);
   const card = (w, id) => `<div class="rcard block" id="${id}"><span class="re">${w.e}</span><span class="rw">${esc(w.w)}</span></div>`;
   h(`<div class="screen">${bar()}
     <div class="prompt">Essas palavras rimam?</div>
@@ -1062,18 +1159,18 @@ function roundRhyme(r){
     <div class="rbtns"><button class="block press rb-yes" id="yes">👍<span>Rima!</span></button><button class="block press rb-no" id="no">👎<span>Não rima</span></button></div>
   </div>`);
   wireBar(say); say();
-  document.getElementById('ra').onclick = () => speak(la);
-  document.getElementById('rb').onclick = () => speak(lb);
+  document.getElementById('ra').onclick = () => talk([WD(r.a)]);
+  document.getElementById('rb').onclick = () => talk([WD(r.b)]);
   const mark = (id, w, end) => { const el = document.querySelector(`#${id} .rw`); const k = w.w.length - end.length; el.innerHTML = `${esc(w.w.slice(0,k))}<b>${esc(w.w.slice(k))}</b>`; };
   const reveal = () => { if (r.rhyme){ mark('ra', r.a, r.end); mark('rb', r.b, r.end); } else { mark('ra', r.a, r.ea); mark('rb', r.b, r.eb); } };
   const answer = yes => {
     if (G.busy) return;
     reveal();
     if (yes === r.rhyme){
-      nextRound(r.rhyme ? `Isso! ${la} e ${lb} terminam igual: ${r.end.toLowerCase()}!` : `Isso! ${la} e ${lb} não rimam. O final é diferente.`);
+      nextRound(r.rhyme ? ['geral-isso', WD(r.a), 'geral-e', WD(r.b), 'rima-terminam', 'rima-fim-' + slug(r.end)] : ['geral-isso', WD(r.a), 'geral-e', WD(r.b), 'rima-nao-rimam']);
     } else {
       G.busy = true; G.firstTry = false; boop(); recConf(`rima: ${r.a.w}/${r.b.w}`);
-      speak(r.rhyme ? `Escuta de novo: ${la}... ${lb}. Os dois terminam com ${r.end.toLowerCase()}. Rimam!` : `Escuta: ${la}... ${lb}. O final é diferente, então não rimam.`);
+      talk(r.rhyme ? ['geral-escuta-de-novo', WD(r.a), WD(r.b), 'rima-os-dois', 'rima-fim-' + slug(r.end), 'rima-rimam'] : ['geral-escuta', WD(r.a), WD(r.b), 'rima-diferente']);
       setTimeout(() => { G.i++; G.busy = false; G.i < G.words.length ? round() : reward(); }, 4200);
     }
   };
@@ -1102,7 +1199,7 @@ function feedRounds(){
 }
 function roundFeed(r){
   const a = r.a; let eaten = 0;
-  const say = () => speak(`O ${a.name} só come coisas que começam com ${letterName(a.l)}. Arraste a comida até ele!`);
+  const say = () => talk(['alimente-' + a.name]);
   h(`<div class="screen">${bar()}
     <div class="prompt">O ${a.name.toUpperCase()} só come coisas com <b style="color:var(--berry);font-size:26px">${a.l}</b></div>
     <div class="foods">${r.items.map((f,k) => `<button class="food block" data-k="${k}"><span class="fe">${f.e}</span><span class="fw"><b>${esc(f.w[0])}</b>${esc(f.w.slice(1))}</span></button>`).join('')}</div>
@@ -1119,13 +1216,13 @@ function roundFeed(r){
       btn.style.transform = `translate(${er.left + er.width/2 - (br.left + br.width/2)}px, ${er.top + er.height/2 - (br.top + br.height/2)}px) scale(.3)`;
       btn.style.opacity = '0'; btn.disabled = true;
       setTimeout(() => { eater.classList.remove('chomp'); void eater.offsetWidth; eater.classList.add('chomp'); tone([300, 420, 300], .07, 'square', .08); }, 380);
-      speak(`Nham! ${f.w.toLowerCase()}!`); eaten++;
-      if (eaten === 3) setTimeout(() => nextRound(`O ${a.name} está de barriga cheia!`), 700);
+      talk(['alimente-nham', WD(f)]); eaten++;
+      if (eaten === 3) setTimeout(() => nextRound(['alimente-cheio-' + a.name]), 700);
     } else {
       G.firstTry = false; boop(); recConf(`alimente: ${a.l}→${f.w}`);
       btn.style.transition = 'transform .3s'; btn.style.transform = '';
       eater.classList.remove('shake'); void eater.offsetWidth; eater.classList.add('shake');
-      speak(`Eca! ${f.w.toLowerCase()} começa com ${letterName(base(f.w[0]))}. O ${a.name} só come ${letterName(a.l)}!`);
+      talk(['alimente-eca', WD(f), 'alimente-comeca-com', LT(base(f.w[0])), 'alimente-so-' + a.name]);
     }
   };
   $app.querySelectorAll('.food').forEach(btn => {
@@ -1158,11 +1255,11 @@ function memStart(mode){
   let cards;
   if (mode === 'minuscula'){
     const ls = pick('ABDEGLMOPRSTUV'.split(''), 6);
-    cards = ls.flatMap(l => [{key:l, face:l, say:letterName(l)}, {key:l, face:l.toLowerCase(), say:letterName(l)}]);
+    cards = ls.flatMap(l => [{key:l, face:l, part:LT(l)}, {key:l, face:l.toLowerCase(), part:LT(l)}]);
   } else {
     const pool = ALL_WORDS().concat(...Object.values(VWORDS)), used = new Set(), chosen = [];
     for (const w of shuffle(pool)){ const l = base(w.w[0]); if (!used.has(l)){ used.add(l); chosen.push(w); } if (chosen.length === 6) break; }
-    cards = chosen.flatMap(w => { const l = base(w.w[0]); return [{key:l, face:l, say:letterName(l)}, {key:l, face:w.e, say:w.w.toLowerCase(), pic:true}]; });
+    cards = chosen.flatMap(w => { const l = base(w.w[0]); return [{key:l, face:l, part:LT(l)}, {key:l, face:w.e, part:WD(w), pic:true}]; });
   }
   cards = shuffle(cards);
   G = {lv:11, pack:mode, words:[], i:0, busy:false, back:gamesMenu};
@@ -1173,18 +1270,18 @@ function memStart(mode){
     <div class="prompt">${mode === 'minuscula' ? 'Ache a maiúscula e a minúscula da mesma letra' : 'Ache a letra e o desenho que começa com ela'}</div>
     <div class="memgrid">${cards.map((c,k) => `<button class="mcard" data-k="${k}" aria-label="Carta"><span class="mi"><span class="mf mback">🐾</span><span class="mf mfront ${c.pic ? 'pic' : ''}">${c.face}</span></span></button>`).join('')}</div>
   </div>`);
-  const say = () => speak(mode === 'minuscula' ? 'Vire as cartas e ache os pares: a letra grande e a letra pequena!' : 'Vire as cartas e ache os pares: a letra e o desenho que começa com ela!');
+  const say = () => talk([mode === 'minuscula' ? 'memoria-minuscula' : 'memoria-desenho']);
   document.getElementById('back').onclick = gamesMenu; document.getElementById('ouvir').onclick = say; say();
   $app.querySelectorAll('.mcard').forEach(btn => btn.onclick = () => {
     const k = +btn.dataset.k, c = cards[k];
     if (lock || btn.classList.contains('flip')) return;
-    btn.classList.add('flip'); speak(c.say); open.push({btn, c});
+    btn.classList.add('flip'); talk([c.part]); open.push({btn, c});
     if (open.length < 2) return;
     const [x, y] = open; open = []; lock = true;
     if (x.c.key === y.c.key){
       setTimeout(() => { x.btn.classList.add('matched'); y.btn.classList.add('matched'); tone([660, 990], .09, 'triangle', .12); lock = false; matched++;
         document.getElementById('mc').textContent = `${matched} de 6 pares`;
-        if (matched === 6){ confetti(); speak('Você achou todos os pares!'); finishGame(); } }, 500);
+        if (matched === 6){ confetti(); talk(['memoria-fim']); finishGame(); } }, 500);
     } else {
       G.firstTry = false;
       setTimeout(() => { x.btn.classList.remove('flip'); y.btn.classList.remove('flip'); lock = false; }, 1200);
@@ -1198,7 +1295,7 @@ function roundTrain(word){
   const others = ALL_WORDS().filter(w => w !== word).flatMap(w => w.s).filter(s => !word.s.includes(s));
   const chips = shuffle(word.s.map(s => ({s})).concat([{s: pick(others,1)[0]}]));
   const wag = Array(n).fill(null);
-  const say = () => speak(`Monte ${word.w.toLowerCase()} nos vagões e faça o trem partir!`);
+  const say = () => talk(['trem-monte', WD(word), 'trem-partir']);
   h(`<div class="screen">${bar()}
     <div class="stage block"><button class="pet" id="pet" aria-label="Ouvir">${word.e}</button>
       <div class="prompt">Coloque os pedacinhos nos vagões</div></div>
@@ -1206,7 +1303,7 @@ function roundTrain(word){
     <div class="chips">${chips.map((c,k) => `<button class="chip block press" data-k="${k}">${esc(c.s)}</button>`).join('')}</div>
     <button class="cta go block press" id="go" disabled>🚂 Piuí! Partir</button>
   </div>`);
-  wireBar(say); document.getElementById('pet').onclick = () => speak(word.s.map(sylSay).join('... ') + '... ' + word.w.toLowerCase(), {rate:.7}); say();
+  wireBar(say); document.getElementById('pet').onclick = () => talk([...sylParts(word), WD(word)], {rate:.7}); say();
   const goBtn = document.getElementById('go');
   const render = () => {
     wag.forEach((c, k) => { const el = document.getElementById('wg' + k); el.textContent = c ? c.s : ''; el.classList.toggle('full', !!c); });
@@ -1215,7 +1312,7 @@ function roundTrain(word){
   };
   $app.querySelectorAll('.chip').forEach(b => b.onclick = () => {
     if (G.busy) return; const c = chips[+b.dataset.k]; const k = wag.indexOf(null);
-    if (k < 0 || wag.includes(c)) return; wag[k] = c; tick(); speak(sylSay(c.s)); render();
+    if (k < 0 || wag.includes(c)) return; wag[k] = c; tick(); talk([SY(c.s)]); render();
   });
   for (let k = 0; k < n; k++) document.getElementById('wg' + k).onclick = () => { if (G.busy || !wag[k]) return; wag[k] = null; render(); };
   goBtn.onclick = () => {
@@ -1224,12 +1321,12 @@ function roundTrain(word){
     if (!wrong.includes(true)){
       G.busy = true; tone([880, 880, 1100], .18, 'square', .06);
       document.getElementById('train').classList.add('leave');
-      nextRound(`Piuí! ${word.w.toLowerCase()}!`);
+      nextRound(['trem-piui', WD(word)]);
     } else {
       G.firstTry = false; boop(); recConf(`trem: ${word.w}`);
       wrong.forEach((bad, k) => { if (bad){ shakeEl(document.getElementById('wg' + k)); wag[k] = null; } });
       setTimeout(render, 400);
-      speak(`Quase! Escuta: ${word.s.map(sylSay).join('... ')}`, {rate:.75});
+      talk(['geral-quase', 'geral-escuta', ...sylParts(word)], {rate:.75});
     }
   };
 }
@@ -1237,7 +1334,7 @@ function roundTrain(word){
 // ---------- 7. Traçar a letra ----------
 function traceRounds(){ return shuffle(pick(VOWELS, 3).concat(pick('PBMLTSVGDR'.split(''), 2))); }
 function roundTrace(letter){
-  const say = () => speak(`Pinte a letra ${letterName(letter)} com o dedo!`);
+  const say = () => talk(['tracar-pinte', LT(letter), 'tracar-dedo']);
   h(`<div class="screen">${bar()}
     <div class="prompt">Pinte a letra <b style="color:var(--berry)">${letter}</b> com o dedo</div>
     <div class="tracebox block"><canvas id="tc" aria-label="Área de desenho da letra ${letter}"></canvas></div>
@@ -1285,10 +1382,10 @@ function roundTrace(letter){
     if (!drawing) return; drawing = false;
     const c = check();
     if (c.painted > 25 && c.outRatio > 0.45){
-      G.firstTry = false; boop(); speak('Tenta pintar só dentro da letra!');
+      G.firstTry = false; boop(); talk(['tracar-dentro']);
       pctx.clearRect(0, 0, size, size); setTimeout(draw, 250); return;
     }
-    if (c.cov >= 0.7){ done = true; nextRound(`Muito bem! Essa é a letra ${letterName(letter)}!`); }
+    if (c.cov >= 0.7){ done = true; nextRound(['tracar-fim', LT(letter)]); }
     else if (c.cov > 0.35) tick();
   };
   cv.addEventListener('pointerup', up); cv.addEventListener('pointercancel', up);
@@ -1300,7 +1397,7 @@ function fishRounds(){ return pick(simpleWords(), 3); }
 function roundFish(word){
   const target = word.w.split(''), got = [];
   const need = () => target[got.length];
-  const say = () => speak(`Pesque as letras de ${word.w.toLowerCase()}, na ordem!`);
+  const say = () => talk(['pesca-instrucao', WD(word), 'geral-na-ordem']);
   h(`<div class="screen">${bar()}
     <div class="rtarget block"><span class="re">${word.e}</span>${target.map((_,k) => `<span class="rslot" id="fs${k}"></span>`).join('')}</div>
     <div class="lake" id="lake"><div class="wave"></div></div>
@@ -1334,13 +1431,13 @@ function roundFish(word){
       f.caught = true; f.el.classList.add('caught');
       const k = got.length; got.push(f.letter);
       const slot = document.getElementById('fs' + k); slot.textContent = f.letter; slot.classList.add('on');
-      tone([520, 780, 1040], .07, 'triangle', .1); speak(letterName(f.letter));
+      tone([520, 780, 1040], .07, 'triangle', .1); talk([LT(f.letter)]);
       setTimeout(() => { f.el.remove(); if (!done) spawn(f.row, false); }, 500);
-      if (got.length === target.length){ done = true; stopLoop(); nextRound(`Você pescou ${word.w.toLowerCase()}!`); }
+      if (got.length === target.length){ done = true; stopLoop(); nextRound(['pesca-fim', WD(word)]); }
     } else {
       G.firstTry = false; boop(); f.el.classList.remove('dive'); void f.el.offsetWidth; f.el.classList.add('dive'); recConf(`pescaria: ${need()}→${f.letter}`);
       const now = performance.now();
-      if (now - lastTalk > 1800){ lastTalk = now; speak(`Esse é o ${letterName(f.letter)}. Procure o ${letterName(need())}!`); }
+      if (now - lastTalk > 1800){ lastTalk = now; talk(['geral-esse-e-o', LT(f.letter), 'geral-procure-o', LT(need())]); }
     }
   };
   for (let r = 0; r < rows; r++) spawn(r, true);
@@ -1358,8 +1455,8 @@ function roundFish(word){
 // ---------- game ----------
 let G = null;
 function start(lv, pack){
-  if (lv === 7 && !pack) return modeMenu('Corrida da Pipoca', RACE_MODES, m => start(7, m), 'Escolha a corrida!');
-  if (lv === 11) return pack ? memStart(pack) : modeMenu('Jogo da memória', MEM_MODES, m => start(11, m), 'Escolha o jogo da memória!');
+  if (lv === 7 && !pack) return modeMenu('Corrida da Pipoca', RACE_MODES, m => start(7, m), 'menu-corrida');
+  if (lv === 11) return pack ? memStart(pack) : modeMenu('Jogo da memória', MEM_MODES, m => start(11, m), 'menu-memoria');
   if (lv >= 7){
     const gen = {7: () => raceRounds(pack), 8: () => pick(ALL_WORDS().filter(w => w.s.length <= 4), ROUNDS).sort((a,b) => a.s.length - b.s.length),
       9: rhymeRounds, 10: feedRounds, 12: () => pick(ALL_WORDS().filter(w => w.s.length >= 2 && w.s.length <= 4), ROUNDS).sort((a,b) => a.s.length - b.s.length),
@@ -1394,7 +1491,7 @@ function wireBar(say){
 function success(word, petEl){
   G.busy = true; ding(); confetti();
   if (petEl){ petEl.classList.remove('pop'); void petEl.offsetWidth; petEl.classList.add('pop'); }
-  setTimeout(() => speak(PRAISE[Math.floor(Math.random()*PRAISE.length)] + ' ' + wordSay(word) + '!'), 150);
+  setTimeout(() => talk([PRAISE[Math.floor(Math.random()*PRAISE.length)], WD(word)]), 150);
   setTimeout(() => { G.i++; G.busy = false; G.i < G.words.length ? round() : reward(); }, 2100);
 }
 function round(){ G.firstTry = true; ({1:roundLetter, 2:roundBuild, 3:roundRead, 4:roundMatch, 5:roundBalloons, 6:roundHunt, 7:roundRace, 8:roundDrum, 9:roundRhyme, 10:roundFeed, 12:roundTrain, 13:roundTrace, 14:roundFish})[G.lv](G.words[G.i]); }
@@ -1402,7 +1499,7 @@ function round(){ G.firstTry = true; ({1:roundLetter, 2:roundBuild, 3:roundRead,
 function roundLetter(word){
   const first = word.w[0];
   const opts = shuffle([first].concat(pick(LETTERS.filter(l=>l!==first), 2)));
-  const say = () => speak(`${wordSay(word)}. ${wordSay(word)} começa com qual letra?`);
+  const say = () => talk([WD(word), WD(word), 'letrinhas-pergunta']);
   h(`<div class="screen">${bar()}
     <div class="stage block">
       <button class="pet" id="pet" aria-label="Ouvir">${word.e}</button>
@@ -1420,7 +1517,7 @@ function roundLetter(word){
       rec(word, G.firstTry); success(word, document.getElementById('pet'));
     } else {
       G.firstTry = false; boop(); shakeEl(b); recConf(`${first}→${l}`);
-      speak(`Essa é a letra ${LETTER_NAME[l]||l}. Escuta de novo: ${wordSay(word)}.`);
+      talk(['geral-essa-e-a-letra', LT(l), 'geral-escuta-de-novo', WD(word)]);
     }
   });
 }
@@ -1429,7 +1526,7 @@ function roundBuild(word){
   const others = ALL_WORDS().filter(w=>w!==word).flatMap(w=>w.s).filter(s=>!word.s.includes(s));
   const chips = shuffle(word.s.map((s,k)=>({s,k})).concat([{s:pick(others,1)[0], k:-1}]));
   let next = 0;
-  const say = () => speak(`Vamos montar: ${wordSay(word)}.`);
+  const say = () => talk(['monta-vamos', WD(word)]);
   h(`<div class="screen">${bar()}
     <div class="stage block">
       <button class="pet" id="pet" aria-label="Ouvir">${word.e}</button>
@@ -1438,18 +1535,18 @@ function roundBuild(word){
     </div>
     <div class="chips">${chips.map((c,n)=>`<button class="chip block press" data-n="${n}">${esc(c.s)}</button>`).join('')}</div>
   </div>`);
-  wireBar(say); document.getElementById('pet').onclick = () => speak(word.s.map(sylSay).join('... ') + '... ' + wordSay(word), {rate:.7}); say();
+  wireBar(say); document.getElementById('pet').onclick = () => talk([...sylParts(word), WD(word)], {rate:.7}); say();
   $app.querySelectorAll('.chip').forEach(b => b.onclick = () => {
     if (G.busy) return;
     const c = chips[+b.dataset.n];
     if (c.s === word.s[next]){
-      speak(sylSay(c.s)); tick();
+      talk([SY(c.s)]); tick();
       const slot = document.getElementById('s'+next); slot.textContent = c.s; slot.classList.add('on');
       b.classList.add('used'); next++;
       if (next === word.s.length){ rec(word, G.firstTry); setTimeout(() => success(word, document.getElementById('pet')), 500); }
     } else {
       G.firstTry = false; boop(); shakeEl(b); recConf(`${word.w}: ${word.s[next]}→${c.s}`);
-      speak(`${sylSay(c.s)}? Hmm, escuta: ${word.s.map(sylSay).join('... ')}`, {rate:.75});
+      talk([SY(c.s), 'monta-hmm', ...sylParts(word)], {rate:.75});
     }
   });
 }
@@ -1457,7 +1554,7 @@ function roundBuild(word){
 function roundRead(word){
   const opts = shuffle([word].concat(pick(WORDS.filter(w=>w!==word && w.w[0]!==word.w[0]), 2)));
   let errs = 0;
-  const say = () => speak('Leia a palavra e toque no bicho certo.');
+  const say = () => talk(['ler-instrucao']);
   h(`<div class="screen">${bar()}
     <div class="stage block">
       <div class="word" id="wd" style="font-size:58px">${esc(word.w)}</div>
@@ -1467,14 +1564,14 @@ function roundRead(word){
     <button class="hint block press" id="hint" hidden>🐹 Pipoca, me ajuda!</button>
   </div>`);
   wireBar(say); say();
-  document.getElementById('hint').onclick = () => speak(word.s.map(sylSay).join('... '), {rate:.7});
+  document.getElementById('hint').onclick = () => talk(sylParts(word), {rate:.7});
   $app.querySelectorAll('.opt').forEach(b => b.onclick = () => {
     if (G.busy) return;
     const o = opts[+b.dataset.n];
     if (o === word){ b.classList.add('right'); rec(word, G.firstTry); success(word, b); }
     else {
       G.firstTry = false; errs++; boop(); shakeEl(b); recConf(`${word.w}→${o.w}`);
-      speak(`${o.g==='a'?'Essa':'Esse'} é ${o.g} ${wordSay(o)}! Tenta de novo.`);
+      talk([o.g === 'a' ? 'geral-essa-e-a' : 'geral-esse-e-o', WD(o), 'geral-tenta-de-novo']);
       if (errs >= 1) document.getElementById('hint').hidden = false;
     }
   });
@@ -1490,7 +1587,7 @@ function reward(){
   if (prize) data.stickers.push(prize.w);
   save(); ding(); confetti(); setTimeout(confetti, 500);
   const title = prize ? `Você ganhou ${prize.g === 'a' ? 'a' : 'o'} ${prize.w.toLowerCase()}!` : 'Você ganhou uma estrela!';
-  speak(prize ? `Parabéns! ${title} Ele vai morar no seu zoológico.`.replace('Ele', prize.g==='a'?'Ela':'Ele') : 'Parabéns! Você já tem todos os bichinhos. Ganhou mais uma estrela!');
+  talk(prize ? [prize.g === 'a' ? 'premio-ganhou-a' : 'premio-ganhou-o', WD(prize), prize.g === 'a' ? 'premio-mora-ela' : 'premio-mora-ele'] : ['premio-completo']);
   h(`<div class="screen reward">
     <div class="big">${prize ? prize.e : '⭐'}</div>
     <h2>${esc(title)}</h2>
@@ -1523,7 +1620,7 @@ function storyList(){
   document.getElementById('back').onclick = home;
   $app.querySelectorAll('.chap[data-n]').forEach(b => b.onclick = () => {
     unlockAudio();
-    if (b.dataset.locked){ shakeEl(b); speak(`Essa aventura ainda está fechada. Termine o capítulo ${+b.dataset.n - 1} primeiro!`); return; }
+    if (b.dataset.locked){ shakeEl(b); talk(['hist-fechada']); return; }
     playChapter(+b.dataset.n);
   });
 }
@@ -1645,8 +1742,8 @@ function zoo(){
   document.getElementById('back').onclick = home;
   $app.querySelectorAll('.sticker').forEach(b => b.onclick = () => {
     const w = WORDS.find(x => x.w === b.dataset.w);
-    if (data.stickers.includes(w.w)) speak(`${w.s.map(sylSay).join('... ')}... ${wordSay(w)}!`, {rate:.75});
-    else speak('Esse bichinho ainda está escondido. Jogue para descobrir!');
+    if (data.stickers.includes(w.w)) talk([...sylParts(w), WD(w)], {rate:.75});
+    else talk(['zoo-escondido']);
   });
 }
 
@@ -1712,6 +1809,17 @@ function parents(){
 }
 
 window.__zooState = () => G; // usado só nos testes automáticos
+window.__zooCatalog = () => { // lista de tudo que pode ser gravado (gera o roteiro)
+  const words = new Map(), add = w => { const p = WD(w); if (!words.has(p.id)) words.set(p.id, {id:p.id, text: typeof w === 'string' ? w : w.w}); };
+  ALL_WORDS().forEach(add); Object.values(VWORDS).flat().forEach(add); RHYMES.flatMap(g => g.w).forEach(add); Object.values(FOODS).flat().forEach(add);
+  const syl = new Map(); ALL_WORDS().forEach(w => w.s.forEach(x => { const p = SY(x); syl.set(p.id, {id:p.id, text:x}); }));
+  const ls = new Set(VOWELS.concat(CONSONANTS, LETTERS, 'ABDEGLMOPRSTUV'.split('')));
+  ALL_WORDS().concat(...Object.values(VWORDS)).forEach(w => ls.add(base(w.w[0])));
+  simpleWords().forEach(w => w.w.split('').forEach(c => ls.add(c)));
+  const letters = [...ls].sort().map(l => ({id: LT(l).id, text: l, say: letterName(l)}));
+  return {phrases: Object.entries(PHRASES).map(([id, text]) => ({id, text})), words: [...words.values()].sort((a,b) => a.id.localeCompare(b.id)),
+    syl: [...syl.values()].sort((a,b) => a.id.localeCompare(b.id)), letters};
+};
 home();
 })();
 </script>
