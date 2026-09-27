@@ -151,6 +151,87 @@ svg.lines line{stroke:var(--grass); stroke-width:6; stroke-linecap:round}
 .target .cnt{font-family:var(--display); font-weight:800; font-size:22px}
 .hunt{display:flex; gap:8px; flex-wrap:wrap; justify-content:center}
 .hunt button{min-width:52px; height:74px; padding:0 6px; font-weight:700; font-size:42px}
+/* Brincadeiras */
+.story-card.play{background:#8A63D2; box-shadow:0 5px 0 var(--ink)}
+.story-card.play:active{box-shadow:0 1px 0 var(--ink)}
+.gamegrid{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+.gtile{display:flex; flex-direction:column; align-items:flex-start; gap:2px; padding:12px; text-align:left; min-height:128px}
+.gtile .gi{font-size:36px; line-height:1.1}
+.gtile .gt{font-family:var(--display); font-weight:800; font-size:18px; line-height:1.1}
+.gtile .gd{font-size:13px; color:var(--ink2); line-height:1.25}
+.gtile .gs{margin-top:auto; font-family:var(--display); font-weight:800; font-size:14px}
+.rtarget{display:flex; align-items:center; justify-content:center; gap:8px; padding:10px; flex-wrap:wrap}
+.rtarget .re{font-size:40px; margin-right:4px}
+.rslot{width:46px; height:52px; border-radius:12px; border:3px dashed var(--ink2); display:grid; place-items:center; font-weight:700; font-size:30px; color:#B7C3D3; box-sizing:border-box}
+.rslot.on{border-style:solid; border-color:var(--ink); background:var(--sun); color:var(--ink)}
+.race{position:relative; height:min(52vh,440px); border:3px solid var(--ink); border-radius:22px; overflow:hidden; touch-action:none;
+  background:linear-gradient(#9FD8AE, #7CC592)}
+.lane-line{position:absolute; top:0; bottom:0; width:6px; margin-left:-3px;
+  background:repeating-linear-gradient(to bottom, #fff 0 26px, transparent 26px 52px); animation:lanes .6s linear infinite; opacity:.8}
+@keyframes lanes{to{background-position:0 52px}}
+.runner{position:absolute; bottom:18px; font-size:56px; line-height:1; transform:translateX(-50%); transition:left .14s ease-out; z-index:2}
+.runner.shake{animation:shake .4s}
+.ritem{position:absolute; top:0; width:52px; height:52px; border-radius:50%; background:#fff; border:3px solid var(--ink);
+  display:grid; place-items:center; font-weight:700; font-size:30px; font-family:var(--read); box-shadow:0 4px 0 var(--ink); z-index:1}
+.ritem.rgot{background:var(--sun); animation:popout .35s forwards}
+.ritem.rbad{background:#FCDDE8; opacity:.5}
+.rctl{display:grid; grid-template-columns:1fr 1fr; gap:14px}
+.rctl button{height:72px; font-size:34px}
+.sylrow{display:flex; gap:8px; flex-wrap:wrap; justify-content:center}
+.syl{font-weight:700; font-size:40px; letter-spacing:3px; padding:4px 10px; border-radius:14px; border:3px solid transparent; color:#9AA8BC; transition:all .15s}
+.syl.on{color:var(--ink); background:var(--sun); border-color:var(--ink)}
+.syl.over{color:var(--berry)}
+.drum{align-self:center; width:170px; height:170px; border-radius:50%; font-size:96px; line-height:1; background:var(--card); border:3px solid var(--ink); box-shadow:0 6px 0 var(--ink)}
+.drum.hit{animation:drumhit .18s}
+@keyframes drumhit{50%{transform:scale(.9) translateY(4px); box-shadow:0 2px 0 var(--ink)}}
+.rpair{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+.rcard{display:flex; flex-direction:column; align-items:center; gap:6px; padding:16px 8px; cursor:pointer}
+.rcard .re{font-size:72px; line-height:1}
+.rcard .rw{font-weight:700; font-size:24px; letter-spacing:2px}
+.rcard .rw b{color:var(--berry)}
+.rbtns{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+.rbtns button{height:96px; font-size:40px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px}
+.rbtns span{font-family:var(--display); font-weight:800; font-size:18px}
+.rb-yes{background:#D6F2E3} .rb-no{background:#FCDDE8}
+.foods{display:grid; grid-template-columns:repeat(3,1fr); gap:10px}
+.food{height:96px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; touch-action:none; position:relative; z-index:1}
+.food .fe{font-size:44px; line-height:1}
+.food .fw{font-size:12px; font-weight:700; letter-spacing:1px}
+.food .fw b{color:var(--berry)}
+.food.lift{z-index:5; box-shadow:0 10px 0 var(--ink)}
+.eater{align-self:center; position:relative; width:150px; height:150px; border-radius:50%; background:var(--card); border:3px solid var(--ink); display:grid; place-items:center; box-shadow:0 5px 0 var(--ink)}
+.eater .ee{font-size:96px; line-height:1}
+.eater .bubble2{position:absolute; top:-8px; right:-8px; width:48px; height:48px; border-radius:50%; background:var(--berry); color:#fff; border:3px solid var(--ink); display:grid; place-items:center; font-weight:700; font-size:28px}
+.eater.chomp{animation:chomp .5s}
+@keyframes chomp{25%{transform:scale(1.15)} 50%{transform:scale(.95)} 75%{transform:scale(1.08)}}
+.eater.shake{animation:shake .4s}
+.memgrid{display:grid; grid-template-columns:repeat(3,1fr); gap:10px}
+.mcard{aspect-ratio:1/1.1; max-width:100%; perspective:600px; padding:0}
+.mcard .mi{position:relative; display:block; width:100%; height:100%; transition:transform .35s; transform-style:preserve-3d}
+.mcard.flip .mi{transform:rotateY(180deg)}
+.mcard .mf{position:absolute; inset:0; display:grid; place-items:center; border-radius:16px; border:3px solid var(--ink); backface-visibility:hidden; -webkit-backface-visibility:hidden; box-shadow:0 4px 0 var(--ink)}
+.mcard .mback{background:var(--sky2); font-size:34px}
+.mcard .mfront{background:var(--card); transform:rotateY(180deg); font-weight:700; font-size:50px; font-family:var(--read)}
+.mcard .mfront.pic{font-size:46px}
+.mcard.matched .mfront{background:#D6F2E3}
+.railwrap{position:relative; overflow:hidden; padding:6px 0 12px}
+.train{display:flex; align-items:flex-end; gap:6px; justify-content:center; transition:transform 1.6s ease-in}
+.train.leave{transform:translateX(130%)}
+.loco{font-size:62px; line-height:1; transform:scaleX(-1)}
+.wagon{min-width:70px; height:62px; padding:0 6px; border-radius:10px; border:3px dashed var(--ink2); background:#fff8; font-weight:700; font-size:28px; letter-spacing:2px; font-family:var(--read); color:var(--ink); position:relative}
+.wagon.full{border-style:solid; border-color:var(--ink); background:var(--sun)}
+.wagon::after{content:"● ●"; position:absolute; left:0; right:0; bottom:-14px; font-size:14px; color:var(--ink); letter-spacing:10px}
+.rail{height:4px; background:var(--ink); margin-top:14px; border-radius:2px}
+.cta:disabled{opacity:.45}
+.tracebox{display:grid; place-items:center; padding:12px}
+.tracebox canvas{touch-action:none; max-width:100%; border-radius:12px; background:#fff}
+.lake{position:relative; height:min(50vh,420px); border:3px solid var(--ink); border-radius:22px; overflow:hidden; background:linear-gradient(#7CC4EA, #3E8EC4)}
+.lake .wave{position:absolute; inset:0 0 auto 0; height:18px; background:repeating-radial-gradient(circle at 12px -6px, #fff6 0 10px, transparent 11px 24px)}
+.fish{position:absolute; left:0; top:0; width:84px; height:56px; padding:0; background:none; border:0; display:grid; place-items:center}
+.fish .fb{font-size:54px; line-height:1; display:block}
+.fish .fl{position:absolute; width:36px; height:36px; border-radius:50%; background:#fff; border:3px solid var(--ink); display:grid; place-items:center; font-weight:700; font-size:22px; font-family:var(--read)}
+.fish.caught{transition:transform .45s ease-in, opacity .45s; transform:translate(40vw,-60px) scale(.4)!important; opacity:0}
+.fish.dive .fl{animation:shake .4s}
 /* Stories */
 .story-card{display:flex; align-items:center; gap:14px; padding:16px; width:100%; text-align:left; background:var(--ink); color:#fff; box-shadow:0 5px 0 var(--berry)}
 .story-card:active{box-shadow:0 1px 0 var(--berry)}
@@ -521,7 +602,7 @@ const $app = document.getElementById('app');
 const shuffle = a => { a = a.slice(); for (let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; };
 const pick = (a,n) => shuffle(a).slice(0,n);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-function h(html){ $app.innerHTML = html; window.scrollTo(0,0); }
+function h(html){ if (typeof stopLoop === 'function') stopLoop(); $app.innerHTML = html; window.scrollTo(0,0); }
 function shakeEl(el){ el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake'); }
 function rec(word, ok){ const r = data.words[word.w] || (data.words[word.w] = {ok:0, err:0}); ok ? r.ok++ : r.err++; save(); }
 function recConf(k){ data.conf[k] = (data.conf[k]||0) + 1; save(); }
@@ -543,6 +624,10 @@ function home(){
       <div class="ico">🅰️</div>
       <div><div class="t">Mundo das Vogais</div><div class="d">A, E, I, O, U em 3 brincadeiras</div></div>
     </button>
+    <button class="story-card play block press" id="brinc">
+      <div class="ico">🎪</div>
+      <div><div class="t">Brincadeiras</div><div class="d">Corrida, tambor, pescaria e mais 5</div></div>
+    </button>
     <div class="prompt" style="text-align:left">Treino livre</div>
     <div class="levels">
       ${LEVELS.map(l => `<button class="lvl block press l${l.id}" data-lv="${l.id}">
@@ -559,6 +644,7 @@ function home(){
   document.getElementById('zoo').onclick = () => { tick(); zoo(); };
   document.getElementById('stories').onclick = () => { tick(); unlockAudio(); storyList(); };
   document.getElementById('vogais').onclick = () => { tick(); vowelMenu(); };
+  document.getElementById('brinc').onclick = () => { tick(); unlockAudio(); gamesMenu(); };
   const p = document.getElementById('pais'); let timer;
   const down = () => { p.classList.add('holding'); timer = setTimeout(() => { p.classList.remove('holding'); parents(); }, 1200); };
   const up = () => { p.classList.remove('holding'); clearTimeout(timer); };
@@ -762,9 +848,525 @@ function roundHunt(word){
   });
 }
 
+// ================= BRINCADEIRAS =================
+let LOOP = null; // laço de animação ativo (corrida, pescaria); parado a cada troca de tela
+function stopLoop(){ if (LOOP){ LOOP.alive = false; cancelAnimationFrame(LOOP.id); LOOP = null; } }
+function startLoop(step){
+  stopLoop();
+  const L = LOOP = {alive:true, id:0, last:0};
+  const f = t => { if (!L.alive) return; const dt = L.last ? Math.min(0.05, (t - L.last)/1000) : 0; L.last = t; step(dt); if (L.alive) L.id = requestAnimationFrame(f); };
+  L.id = requestAnimationFrame(f);
+  return L;
+}
+const LNAME = Object.assign({}, LETTER_NAME, {H:'agá', Q:'quê', X:'xis', Z:'zê', K:'cá', W:'dáblio', Y:'ípsilon'});
+const letterName = l => VNAME[l] || LNAME[l] || l.toLowerCase();
+const simpleWords = () => ALL_WORDS().filter(w => /^[A-Z]+$/.test(w.w) && w.w.length <= 5);
+function finishGame(){ G.busy = true; setTimeout(reward, 1400); }
+
+const GAMES = [
+  {lv:7,  name:'Corrida da Pipoca', ico:'🏃', desc:'Pegue as letras certas'},
+  {lv:8,  name:'Tambor das sílabas', ico:'🥁', desc:'Uma batida por pedacinho'},
+  {lv:9,  name:'Rima ou não rima?', ico:'🎶', desc:'Escute o final das palavras'},
+  {lv:10, name:'Alimente o bicho', ico:'🐒', desc:'Só comida com a letra certa'},
+  {lv:11, name:'Jogo da memória', ico:'🃏', desc:'Ache os pares'},
+  {lv:12, name:'Trem das sílabas', ico:'🚂', desc:'Monte a palavra nos vagões'},
+  {lv:13, name:'Traçar a letra', ico:'✍️', desc:'Pinte a letra com o dedo'},
+  {lv:14, name:'Pescaria', ico:'🎣', desc:'Pesque as letras da palavra'},
+];
+function gamesMenu(){
+  h(`<div class="screen">
+    <div class="head"><button class="round-btn block press" id="back" aria-label="Voltar">←</button><h2>Brincadeiras</h2></div>
+    <div class="gamegrid">${GAMES.map(g => `<button class="gtile block press" data-lv="${g.lv}">
+      <span class="gi">${g.ico}</span><span class="gt">${g.name}</span><span class="gd">${g.desc}</span>
+      <span class="gs">⭐ ${data.stars[g.lv]||0}</span></button>`).join('')}</div>
+  </div>`);
+  document.getElementById('back').onclick = home;
+  $app.querySelectorAll('.gtile').forEach(b => b.onclick = () => { tick(); start(+b.dataset.lv); });
+}
+function modeMenu(title, modes, onPick, speech){
+  h(`<div class="screen">
+    <div class="head"><button class="round-btn block press" id="back" aria-label="Voltar">←</button><h2>${esc(title)}</h2></div>
+    <div class="levels">${modes.map(m => `<button class="lvl block press l2" data-m="${m.id}">
+      <div class="ico" style="font-size:32px">${m.e}</div>
+      <div><div class="t">${esc(m.name)}</div><div class="d">${esc(m.desc)}</div></div></button>`).join('')}</div>
+  </div>`);
+  if (speech) speak(speech);
+  document.getElementById('back').onclick = gamesMenu;
+  $app.querySelectorAll('[data-m]').forEach(b => b.onclick = () => { tick(); onPick(b.dataset.m); });
+}
+
+// ---------- 1. Corrida da Pipoca ----------
+const RACE_MODES = [
+  {id:'vogais', name:'Vogais em ordem', e:'🅰️', desc:'Pegue A, E, I, O, U na ordem'},
+  {id:'so-vogais', name:'Só vogais', e:'🚧', desc:'Pegue vogais e desvie das consoantes'},
+  {id:'palavra', name:'Forme a palavra', e:'🔤', desc:'Pegue as letras da palavra na ordem'},
+];
+const CONSONANTS = 'BCDFGLMNPRSTV'.split('');
+function raceRounds(mode){
+  const sp = [1, 1.15, 1.3];
+  if (mode === 'vogais') return sp.map(s => ({target: VOWELS.slice(), speed: s}));
+  if (mode === 'so-vogais') return sp.map(s => ({any: true, need: 5, speed: s}));
+  return pick(simpleWords().filter(w => w.w.length <= 4), 3).map((w, k) => ({target: w.w.split(''), word: w, speed: sp[k]}));
+}
+function roundRace(r){
+  const got = [];
+  const total = r.any ? r.need : r.target.length;
+  const needNow = () => r.any ? null : r.target[got.length];
+  const intro = r.any ? 'Pegue só as vogais e desvie das outras letras!' :
+    r.word ? `Pegue as letras de ${r.word.w.toLowerCase()}, na ordem!` : 'Pegue as vogais na ordem: a, e, i, o, u!';
+  const say = () => speak(intro);
+  h(`<div class="screen">${bar()}
+    <div class="rtarget block">${r.word ? `<span class="re">${r.word.e}</span>` : ''}
+      ${Array.from({length: total}, (_, k) => `<span class="rslot" id="rs${k}">${r.any ? '' : (r.word ? '' : r.target[k])}</span>`).join('')}</div>
+    <div class="race" id="race">
+      <div class="lane-line" style="left:33.33%"></div><div class="lane-line" style="left:66.66%"></div>
+      <div class="runner" id="runner">🐹</div>
+    </div>
+    <div class="rctl"><button class="block press" id="goL" aria-label="Esquerda">◀</button><button class="block press" id="goR" aria-label="Direita">▶</button></div>
+  </div>`);
+  wireBar(say); say();
+  const race = document.getElementById('race'), runner = document.getElementById('runner');
+  let lane = 1, slow = 0, spawnT = 1.2, sinceNeed = 0, lastTalk = 0, done = false, W = race.clientWidth, H = race.clientHeight;
+  const items = [];
+  const laneX = l => (l + 0.5) * W / 3;
+  const place = () => { runner.style.left = laneX(lane) + 'px'; };
+  place();
+  const move = d => { lane = Math.max(0, Math.min(2, lane + d)); place(); };
+  document.getElementById('goL').onclick = () => move(-1);
+  document.getElementById('goR').onclick = () => move(1);
+  race.addEventListener('pointerdown', e => { const b = race.getBoundingClientRect(); move(e.clientX - b.left < b.width/2 ? -1 : 1); });
+  const onKey = e => { if (e.key === 'ArrowLeft') move(-1); if (e.key === 'ArrowRight') move(1); };
+  window.addEventListener('keydown', onKey);
+  const isGood = l => r.any ? isVowel(l) : l === needNow();
+  const spawn = () => {
+    let letter;
+    const forceNeed = sinceNeed >= 2 || Math.random() < 0.42;
+    if (forceNeed){ letter = r.any ? pick(VOWELS,1)[0] : needNow(); sinceNeed = 0; }
+    else {
+      sinceNeed++;
+      if (r.any) letter = pick(CONSONANTS,1)[0];
+      else { const pool = (r.word ? CONSONANTS.concat(VOWELS) : VOWELS.concat(pick(CONSONANTS,3))).filter(x => x !== needNow()); letter = pick(pool,1)[0]; }
+    }
+    const busy = items.filter(it => it.y < 70).map(it => it.lane);
+    const free = [0,1,2].filter(l => !busy.includes(l));
+    if (!free.length) return;
+    const l = pick(free,1)[0];
+    const el = document.createElement('div'); el.className = 'ritem'; el.textContent = letter;
+    el.style.left = laneX(l) + 'px'; race.appendChild(el);
+    items.push({el, lane:l, y:-60, letter, hit:false});
+  };
+  const collect = it => {
+    it.hit = true; it.el.classList.add('rgot');
+    const k = got.length; got.push(it.letter);
+    const slot = document.getElementById('rs' + k); slot.textContent = it.letter; slot.classList.add('on');
+    tone([700 + k*90, 1000 + k*90], .07, 'triangle', .1); speak(letterName(it.letter));
+    if (got.length === total){
+      done = true; stopLoop(); window.removeEventListener('keydown', onKey);
+      nextRound(r.word ? `Chegou! Você formou ${r.word.w.toLowerCase()}!` : 'Chegou! Que corrida!');
+    }
+  };
+  const bump = it => {
+    it.hit = true; it.el.classList.add('rbad'); slow = 0.9; G.firstTry = false;
+    runner.classList.remove('shake'); void runner.offsetWidth; runner.classList.add('shake'); boop();
+    const now = performance.now();
+    if (now - lastTalk > 2200){
+      lastTalk = now;
+      if (r.any) speak(`Opa! ${letterName(it.letter)} não é vogal.`);
+      else speak(`Ainda não! Agora é o ${letterName(needNow())}.`);
+    }
+    recConf(`corrida: ${r.any ? 'vogal' : needNow()}→${it.letter}`);
+  };
+  startLoop(dt => {
+    if (done) return;
+    W = race.clientWidth; H = race.clientHeight;
+    slow = Math.max(0, slow - dt);
+    const v = H * 0.27 * r.speed * (slow > 0 ? 0.45 : 1);
+    spawnT -= dt * r.speed; if (spawnT <= 0){ spawn(); spawnT = 1.05; }
+    const top = H - 96, bottom = H - 22;
+    for (let i = items.length - 1; i >= 0; i--){
+      const it = items[i]; it.y += v * dt;
+      it.el.style.transform = `translate(-50%, ${it.y}px)`;
+      if (!it.hit && it.lane === lane && it.y + 52 > top && it.y < bottom) (isGood(it.letter) ? collect : bump)(it);
+      if (done) return;
+      if (it.y > H + 10 || (it.hit && it.el.dataset.gone)){ it.el.remove(); items.splice(i,1); }
+      else if (it.hit && !it.el.dataset.t){ it.el.dataset.t = 1; setTimeout(() => { it.el.dataset.gone = 1; }, 350); }
+    }
+  });
+}
+
+// ---------- 2. Tambor das sílabas ----------
+function roundDrum(word){
+  const n = word.s.length;
+  let taps = 0, errs = 0, timer = null, demo = false;
+  const say = () => speak(`${word.w.toLowerCase()}. Bata no tambor uma vez para cada pedacinho!`);
+  h(`<div class="screen">${bar()}
+    <div class="stage block">
+      <button class="pet" id="pet" aria-label="Ouvir">${word.e}</button>
+      <div class="sylrow">${word.s.map((s,k) => `<span class="syl" id="sy${k}">${esc(s)}</span>`).join('')}</div>
+      <div class="prompt" id="dp">Uma batida para cada pedacinho</div>
+    </div>
+    <button class="drum" id="drum" aria-label="Tambor">🥁</button>
+  </div>`);
+  wireBar(say); document.getElementById('pet').onclick = () => speak(word.w.toLowerCase()); say();
+  const drum = document.getElementById('drum');
+  const light = k => { const e = document.getElementById('sy' + k); if (e) e.classList.add('on'); };
+  const reset = () => { taps = 0; $app.querySelectorAll('.syl').forEach(e => e.classList.remove('on', 'over')); };
+  const beat = () => { drum.classList.remove('hit'); void drum.offsetWidth; drum.classList.add('hit'); tone([150, 110], .09, 'sine', .35); };
+  const evaluate = () => {
+    if (taps === n){ G.busy = true; nextRound(`Isso! ${word.s.map(sylSay).join(', ')}. ${n === 1 ? 'Um pedacinho' : n + ' pedacinhos'}!`); return; }
+    G.firstTry = false; errs++; boop();
+    const msg = taps > n ? 'Opa, bateu demais!' : 'Faltou pedacinho!';
+    if (errs >= 2) runDemo(msg); else { speak(msg + ' Vamos de novo.'); setTimeout(reset, 900); }
+  };
+  const runDemo = msg => {
+    demo = true; reset(); speak(`${msg} Olha a Pipoca:`);
+    document.getElementById('dp').textContent = 'Olha a Pipoca batendo…';
+    word.s.forEach((s, k) => setTimeout(() => { beat(); light(k); speak(sylSay(s), {rate:.75}); }, 1600 + k*900));
+    setTimeout(() => { reset(); demo = false; errs = 0; document.getElementById('dp').textContent = 'Agora é a sua vez!'; speak('Agora é a sua vez!'); }, 1600 + n*900 + 900);
+  };
+  drum.onclick = () => {
+    if (G.busy || demo) return;
+    beat(); taps++;
+    if (taps <= n){ light(taps - 1); speak(sylSay(word.s[taps - 1])); }
+    else $app.querySelectorAll('.syl').forEach(e => e.classList.add('over'));
+    clearTimeout(timer); timer = setTimeout(evaluate, 1400);
+  };
+}
+
+// ---------- 3. Rima ou não rima ----------
+const RHYMES = [
+  {end:'ATO', w:[W('GATO',[],'🐱','o'), W('PATO',[],'🦆','o'), W('RATO',[],'🐭','o'), W('SAPATO',[],'👞','o')]},
+  {end:'ÃO',  w:[W('LEÃO',[],'🦁','o'), W('AVIÃO',[],'✈️','o'), W('MÃO',[],'✋','a'), W('PÃO',[],'🍞','o'), W('BALÃO',[],'🎈','o'), W('CAMINHÃO',[],'🚚','o')]},
+  {end:'ELHA',w:[W('ABELHA',[],'🐝','a'), W('OVELHA',[],'🐑','a'), W('ORELHA',[],'👂','a')]},
+  {end:'ALO', w:[W('GALO',[],'🐓','o'), W('CAVALO',[],'🐴','o')]},
+  {end:'OTA', w:[W('BOTA',[],'👢','a'), W('GOTA',[],'💧','a')]},
+  {end:'EIJO',w:[W('QUEIJO',[],'🧀','o'), W('BEIJO',[],'💋','o')]},
+  {end:'ELA', w:[W('VELA',[],'🕯️','a'), W('ESTRELA',[],'⭐','a')]},
+  {end:'ATA', w:[W('BATATA',[],'🥔','a'), W('GRAVATA',[],'👔','a')]},
+  {end:'OCO', w:[W('COCO',[],'🥥','o'), W('MACACO',[],'🐒','o')]},
+];
+function rhymeRounds(){
+  const kinds = shuffle([true, true, true, false, false]);
+  return kinds.map(rh => {
+    if (rh){ const g = pick(RHYMES,1)[0], [a,b] = pick(g.w,2); return {a, b, rhyme:true, end:g.end}; }
+    const [g1, g2] = pick(RHYMES,2); return {a: pick(g1.w,1)[0], b: pick(g2.w,1)[0], rhyme:false, ea:g1.end, eb:g2.end};
+  });
+}
+function roundRhyme(r){
+  const la = r.a.w.toLowerCase(), lb = r.b.w.toLowerCase();
+  const say = () => speak(`${la}... ${lb}. Rima?`);
+  const card = (w, id) => `<div class="rcard block" id="${id}"><span class="re">${w.e}</span><span class="rw">${esc(w.w)}</span></div>`;
+  h(`<div class="screen">${bar()}
+    <div class="prompt">Essas palavras rimam?</div>
+    <div class="rpair">${card(r.a,'ra')}${card(r.b,'rb')}</div>
+    <div class="rbtns"><button class="block press rb-yes" id="yes">👍<span>Rima!</span></button><button class="block press rb-no" id="no">👎<span>Não rima</span></button></div>
+  </div>`);
+  wireBar(say); say();
+  document.getElementById('ra').onclick = () => speak(la);
+  document.getElementById('rb').onclick = () => speak(lb);
+  const mark = (id, w, end) => { const el = document.querySelector(`#${id} .rw`); const k = w.w.length - end.length; el.innerHTML = `${esc(w.w.slice(0,k))}<b>${esc(w.w.slice(k))}</b>`; };
+  const reveal = () => { if (r.rhyme){ mark('ra', r.a, r.end); mark('rb', r.b, r.end); } else { mark('ra', r.a, r.ea); mark('rb', r.b, r.eb); } };
+  const answer = yes => {
+    if (G.busy) return;
+    reveal();
+    if (yes === r.rhyme){
+      nextRound(r.rhyme ? `Isso! ${la} e ${lb} terminam igual: ${r.end.toLowerCase()}!` : `Isso! ${la} e ${lb} não rimam. O final é diferente.`);
+    } else {
+      G.busy = true; G.firstTry = false; boop(); recConf(`rima: ${r.a.w}/${r.b.w}`);
+      speak(r.rhyme ? `Escuta de novo: ${la}... ${lb}. Os dois terminam com ${r.end.toLowerCase()}. Rimam!` : `Escuta: ${la}... ${lb}. O final é diferente, então não rimam.`);
+      setTimeout(() => { G.i++; G.busy = false; G.i < G.words.length ? round() : reward(); }, 4200);
+    }
+  };
+  document.getElementById('yes').onclick = () => answer(true);
+  document.getElementById('no').onclick = () => answer(false);
+}
+
+// ---------- 4. Alimente o bicho ----------
+const FOODS = {
+  M: [W('MELANCIA',[],'🍉','a'), W('MAÇÃ',[],'🍎','a'), W('MILHO',[],'🌽','o'), W('MORANGO',[],'🍓','o'), W('MANGA',[],'🥭','a'), W('MEL',[],'🍯','o')],
+  B: [W('BANANA',[],'🍌','a'), W('BOLO',[],'🎂','o'), W('BATATA',[],'🥔','a'), W('BISCOITO',[],'🍪','o'), W('BALA',[],'🍬','a'), W('BRÓCOLIS',[],'🥦','o')],
+  P: [W('PERA',[],'🍐','a'), W('PIPOCA',[],'🍿','a'), W('PÃO',[],'🍞','o'), W('PIZZA',[],'🍕','a'), W('PIMENTA',[],'🌶️','a')],
+  L: [W('LEITE',[],'🥛','o'), W('LIMÃO',[],'🍋','o'), W('LARANJA',[],'🍊','a')],
+  S: [W('SUCO',[],'🧃','o'), W('SALADA',[],'🥗','a'), W('SORVETE',[],'🍦','o'), W('SANDUÍCHE',[],'🥪','o'), W('SOPA',[],'🍲','a')],
+};
+const EATERS = [
+  {l:'M', name:'macaco', e:'🐒', g:'o'}, {l:'B', name:'bode', e:'🐐', g:'o'}, {l:'P', name:'pato', e:'🦆', g:'o'},
+  {l:'L', name:'lobo', e:'🐺', g:'o'}, {l:'S', name:'sapo', e:'🐸', g:'o'},
+];
+function feedRounds(){
+  return pick(EATERS, ROUNDS).map(a => {
+    const good = pick(FOODS[a.l], 3);
+    const bad = pick(Object.keys(FOODS).filter(k => k !== a.l).flatMap(k => FOODS[k]), 3);
+    return {a, items: shuffle(good.concat(bad))};
+  });
+}
+function roundFeed(r){
+  const a = r.a; let eaten = 0;
+  const say = () => speak(`O ${a.name} só come coisas que começam com ${letterName(a.l)}. Arraste a comida até ele!`);
+  h(`<div class="screen">${bar()}
+    <div class="prompt">O ${a.name.toUpperCase()} só come coisas com <b style="color:var(--berry);font-size:26px">${a.l}</b></div>
+    <div class="foods">${r.items.map((f,k) => `<button class="food block" data-k="${k}"><span class="fe">${f.e}</span><span class="fw"><b>${esc(f.w[0])}</b>${esc(f.w.slice(1))}</span></button>`).join('')}</div>
+    <div class="eater" id="eater"><span class="ee">${a.e}</span><span class="bubble2">${a.l}</span></div>
+  </div>`);
+  wireBar(say); say();
+  const eater = document.getElementById('eater');
+  const feed = (btn, f) => {
+    if (G.busy) return;
+    const ok = base(f.w[0]) === a.l;
+    const er = eater.getBoundingClientRect(), br = btn.getBoundingClientRect();
+    if (ok){
+      btn.style.transition = 'transform .45s ease-in, opacity .45s';
+      btn.style.transform = `translate(${er.left + er.width/2 - (br.left + br.width/2)}px, ${er.top + er.height/2 - (br.top + br.height/2)}px) scale(.3)`;
+      btn.style.opacity = '0'; btn.disabled = true;
+      setTimeout(() => { eater.classList.remove('chomp'); void eater.offsetWidth; eater.classList.add('chomp'); tone([300, 420, 300], .07, 'square', .08); }, 380);
+      speak(`Nham! ${f.w.toLowerCase()}!`); eaten++;
+      if (eaten === 3) setTimeout(() => nextRound(`O ${a.name} está de barriga cheia!`), 700);
+    } else {
+      G.firstTry = false; boop(); recConf(`alimente: ${a.l}→${f.w}`);
+      btn.style.transition = 'transform .3s'; btn.style.transform = '';
+      eater.classList.remove('shake'); void eater.offsetWidth; eater.classList.add('shake');
+      speak(`Eca! ${f.w.toLowerCase()} começa com ${letterName(base(f.w[0]))}. O ${a.name} só come ${letterName(a.l)}!`);
+    }
+  };
+  $app.querySelectorAll('.food').forEach(btn => {
+    const f = r.items[+btn.dataset.k];
+    let sx = 0, sy = 0, drag = false, id = null;
+    btn.addEventListener('pointerdown', e => { if (G.busy || btn.disabled) return; id = e.pointerId; sx = e.clientX; sy = e.clientY; drag = false; btn.setPointerCapture(id); btn.style.transition = 'none'; btn.classList.add('lift'); });
+    btn.addEventListener('pointermove', e => {
+      if (e.pointerId !== id) return;
+      const dx = e.clientX - sx, dy = e.clientY - sy;
+      if (Math.abs(dx) + Math.abs(dy) > 10) drag = true;
+      if (drag) btn.style.transform = `translate(${dx}px, ${dy}px)`;
+    });
+    const end = e => {
+      if (e.pointerId !== id) return; id = null; btn.classList.remove('lift');
+      if (!drag){ feed(btn, f); return; }
+      const er = eater.getBoundingClientRect();
+      const over = e.clientX > er.left - 30 && e.clientX < er.right + 30 && e.clientY > er.top - 40 && e.clientY < er.bottom + 30;
+      if (over) feed(btn, f); else { btn.style.transition = 'transform .25s'; btn.style.transform = ''; }
+    };
+    btn.addEventListener('pointerup', end); btn.addEventListener('pointercancel', end);
+  });
+}
+
+// ---------- 5. Jogo da memória ----------
+const MEM_MODES = [
+  {id:'desenho', name:'Letra e desenho', e:'🖼️', desc:'Junte a letra com o desenho que começa com ela'},
+  {id:'minuscula', name:'Maiúscula e minúscula', e:'🔠', desc:'Junte A com a, B com b…'},
+];
+function memStart(mode){
+  let cards;
+  if (mode === 'minuscula'){
+    const ls = pick('ABDEGLMOPRSTUV'.split(''), 6);
+    cards = ls.flatMap(l => [{key:l, face:l, say:letterName(l)}, {key:l, face:l.toLowerCase(), say:letterName(l)}]);
+  } else {
+    const pool = ALL_WORDS().concat(...Object.values(VWORDS)), used = new Set(), chosen = [];
+    for (const w of shuffle(pool)){ const l = base(w.w[0]); if (!used.has(l)){ used.add(l); chosen.push(w); } if (chosen.length === 6) break; }
+    cards = chosen.flatMap(w => { const l = base(w.w[0]); return [{key:l, face:l, say:letterName(l)}, {key:l, face:w.e, say:w.w.toLowerCase(), pic:true}]; });
+  }
+  cards = shuffle(cards);
+  G = {lv:11, pack:mode, words:[], i:0, busy:false, back:gamesMenu};
+  let open = [], matched = 0, lock = false;
+  h(`<div class="screen">
+    <div class="bar"><button class="round-btn block press" id="back" aria-label="Voltar">✕</button><div class="dots"><span class="cnt" id="mc">0 de 6 pares</span></div>
+      <button class="round-btn block press" id="ouvir" aria-label="Ouvir">🔊</button></div>
+    <div class="prompt">${mode === 'minuscula' ? 'Ache a maiúscula e a minúscula da mesma letra' : 'Ache a letra e o desenho que começa com ela'}</div>
+    <div class="memgrid">${cards.map((c,k) => `<button class="mcard" data-k="${k}" aria-label="Carta"><span class="mi"><span class="mf mback">🐾</span><span class="mf mfront ${c.pic ? 'pic' : ''}">${c.face}</span></span></button>`).join('')}</div>
+  </div>`);
+  const say = () => speak(mode === 'minuscula' ? 'Vire as cartas e ache os pares: a letra grande e a letra pequena!' : 'Vire as cartas e ache os pares: a letra e o desenho que começa com ela!');
+  document.getElementById('back').onclick = gamesMenu; document.getElementById('ouvir').onclick = say; say();
+  $app.querySelectorAll('.mcard').forEach(btn => btn.onclick = () => {
+    const k = +btn.dataset.k, c = cards[k];
+    if (lock || btn.classList.contains('flip')) return;
+    btn.classList.add('flip'); speak(c.say); open.push({btn, c});
+    if (open.length < 2) return;
+    const [x, y] = open; open = []; lock = true;
+    if (x.c.key === y.c.key){
+      setTimeout(() => { x.btn.classList.add('matched'); y.btn.classList.add('matched'); tone([660, 990], .09, 'triangle', .12); lock = false; matched++;
+        document.getElementById('mc').textContent = `${matched} de 6 pares`;
+        if (matched === 6){ confetti(); speak('Você achou todos os pares!'); finishGame(); } }, 500);
+    } else {
+      G.firstTry = false;
+      setTimeout(() => { x.btn.classList.remove('flip'); y.btn.classList.remove('flip'); lock = false; }, 1200);
+    }
+  });
+}
+
+// ---------- 6. Trem das sílabas ----------
+function roundTrain(word){
+  const n = word.s.length;
+  const others = ALL_WORDS().filter(w => w !== word).flatMap(w => w.s).filter(s => !word.s.includes(s));
+  const chips = shuffle(word.s.map(s => ({s})).concat([{s: pick(others,1)[0]}]));
+  const wag = Array(n).fill(null);
+  const say = () => speak(`Monte ${word.w.toLowerCase()} nos vagões e faça o trem partir!`);
+  h(`<div class="screen">${bar()}
+    <div class="stage block"><button class="pet" id="pet" aria-label="Ouvir">${word.e}</button>
+      <div class="prompt">Coloque os pedacinhos nos vagões</div></div>
+    <div class="railwrap"><div class="train" id="train">${Array.from({length:n}, (_,k) => `<button class="wagon" id="wg${k}" aria-label="Vagão ${k+1}"></button>`).join('')}<span class="loco">🚂</span></div><div class="rail"></div></div>
+    <div class="chips">${chips.map((c,k) => `<button class="chip block press" data-k="${k}">${esc(c.s)}</button>`).join('')}</div>
+    <button class="cta go block press" id="go" disabled>🚂 Piuí! Partir</button>
+  </div>`);
+  wireBar(say); document.getElementById('pet').onclick = () => speak(word.s.map(sylSay).join('... ') + '... ' + word.w.toLowerCase(), {rate:.7}); say();
+  const goBtn = document.getElementById('go');
+  const render = () => {
+    wag.forEach((c, k) => { const el = document.getElementById('wg' + k); el.textContent = c ? c.s : ''; el.classList.toggle('full', !!c); });
+    $app.querySelectorAll('.chip').forEach(b => b.classList.toggle('used', wag.includes(chips[+b.dataset.k])));
+    goBtn.disabled = wag.includes(null);
+  };
+  $app.querySelectorAll('.chip').forEach(b => b.onclick = () => {
+    if (G.busy) return; const c = chips[+b.dataset.k]; const k = wag.indexOf(null);
+    if (k < 0 || wag.includes(c)) return; wag[k] = c; tick(); speak(sylSay(c.s)); render();
+  });
+  for (let k = 0; k < n; k++) document.getElementById('wg' + k).onclick = () => { if (G.busy || !wag[k]) return; wag[k] = null; render(); };
+  goBtn.onclick = () => {
+    if (G.busy || wag.includes(null)) return;
+    const wrong = wag.map((c, k) => c.s !== word.s[k]);
+    if (!wrong.includes(true)){
+      G.busy = true; tone([880, 880, 1100], .18, 'square', .06);
+      document.getElementById('train').classList.add('leave');
+      nextRound(`Piuí! ${word.w.toLowerCase()}!`);
+    } else {
+      G.firstTry = false; boop(); recConf(`trem: ${word.w}`);
+      wrong.forEach((bad, k) => { if (bad){ shakeEl(document.getElementById('wg' + k)); wag[k] = null; } });
+      setTimeout(render, 400);
+      speak(`Quase! Escuta: ${word.s.map(sylSay).join('... ')}`, {rate:.75});
+    }
+  };
+}
+
+// ---------- 7. Traçar a letra ----------
+function traceRounds(){ return shuffle(pick(VOWELS, 3).concat(pick('PBMLTSVGDR'.split(''), 2))); }
+function roundTrace(letter){
+  const say = () => speak(`Pinte a letra ${letterName(letter)} com o dedo!`);
+  h(`<div class="screen">${bar()}
+    <div class="prompt">Pinte a letra <b style="color:var(--berry)">${letter}</b> com o dedo</div>
+    <div class="tracebox block"><canvas id="tc" aria-label="Área de desenho da letra ${letter}"></canvas></div>
+    <div class="story-ctl"><button class="block press" id="clr">🧽 Apagar</button></div>
+  </div>`);
+  wireBar(say); say();
+  const cv = document.getElementById('tc'), box = cv.parentElement;
+  const size = Math.min(box.clientWidth - 24, 360), dpr = window.devicePixelRatio || 1;
+  cv.width = cv.height = size * dpr; cv.style.width = cv.style.height = size + 'px';
+  const ctx = cv.getContext('2d'); ctx.scale(dpr, dpr);
+  const paint = document.createElement('canvas'); paint.width = paint.height = size;
+  const pctx = paint.getContext('2d');
+  const mask = document.createElement('canvas'); mask.width = mask.height = size;
+  const mctx = mask.getContext('2d');
+  const font = `700 ${Math.round(size * 0.82)}px Andika, "Trebuchet MS", system-ui, sans-serif`;
+  mctx.font = font; mctx.textAlign = 'center'; mctx.textBaseline = 'alphabetic';
+  const m = mctx.measureText(letter);
+  const baseY = size/2 + (m.actualBoundingBoxAscent - m.actualBoundingBoxDescent)/2;
+  mctx.fillText(letter, size/2, baseY);
+  const md = mctx.getImageData(0, 0, size, size).data;
+  const step = 6, inside = [], outside = [];
+  for (let y = 0; y < size; y += step) for (let x = 0; x < size; x += step) (md[(y*size + x)*4 + 3] > 128 ? inside : outside).push([x, y]);
+  const lw = size * 0.11;
+  const draw = () => {
+    ctx.clearRect(0, 0, size, size);
+    ctx.font = font; ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
+    ctx.fillStyle = '#D9E6F2'; ctx.fillText(letter, size/2, baseY);
+    ctx.lineWidth = 3; ctx.setLineDash([8, 8]); ctx.strokeStyle = '#8AA2BD'; ctx.strokeText(letter, size/2, baseY); ctx.setLineDash([]);
+    ctx.drawImage(paint, 0, 0, size, size);
+  };
+  draw();
+  let last = null, drawing = false, done = false;
+  const pos = e => { const b = cv.getBoundingClientRect(); return [(e.clientX - b.left) * size / b.width, (e.clientY - b.top) * size / b.height]; };
+  const stroke = (a, b) => { pctx.strokeStyle = '#EF5B8C'; pctx.lineWidth = lw; pctx.lineCap = pctx.lineJoin = 'round'; pctx.beginPath(); pctx.moveTo(a[0], a[1]); pctx.lineTo(b[0], b[1]); pctx.stroke(); };
+  const check = () => {
+    const pd = pctx.getImageData(0, 0, size, size).data;
+    const hit = p => pd[(p[1]*size + p[0])*4 + 3] > 0;
+    const cov = inside.filter(hit).length / inside.length;
+    const out = outside.filter(hit).length, inn = inside.filter(hit).length;
+    return {cov, outRatio: out / Math.max(1, out + inn), painted: out + inn};
+  };
+  cv.addEventListener('pointerdown', e => { if (done || G.busy) return; drawing = true; cv.setPointerCapture(e.pointerId); last = pos(e); stroke(last, last); draw(); });
+  cv.addEventListener('pointermove', e => { if (!drawing) return; const p = pos(e); stroke(last, p); last = p; draw(); });
+  const up = () => {
+    if (!drawing) return; drawing = false;
+    const c = check();
+    if (c.painted > 25 && c.outRatio > 0.45){
+      G.firstTry = false; boop(); speak('Tenta pintar só dentro da letra!');
+      pctx.clearRect(0, 0, size, size); setTimeout(draw, 250); return;
+    }
+    if (c.cov >= 0.7){ done = true; nextRound(`Muito bem! Essa é a letra ${letterName(letter)}!`); }
+    else if (c.cov > 0.35) tick();
+  };
+  cv.addEventListener('pointerup', up); cv.addEventListener('pointercancel', up);
+  document.getElementById('clr').onclick = () => { pctx.clearRect(0, 0, size, size); draw(); };
+}
+
+// ---------- 8. Pescaria ----------
+function fishRounds(){ return pick(simpleWords(), 3); }
+function roundFish(word){
+  const target = word.w.split(''), got = [];
+  const need = () => target[got.length];
+  const say = () => speak(`Pesque as letras de ${word.w.toLowerCase()}, na ordem!`);
+  h(`<div class="screen">${bar()}
+    <div class="rtarget block"><span class="re">${word.e}</span>${target.map((_,k) => `<span class="rslot" id="fs${k}"></span>`).join('')}</div>
+    <div class="lake" id="lake"><div class="wave"></div></div>
+    <div class="prompt">Toque no peixe com a letra certa</div>
+  </div>`);
+  wireBar(say); say();
+  const lake = document.getElementById('lake');
+  const rows = 5, fish = [];
+  let lastTalk = 0, done = false;
+  const newLetter = () => {
+    const onBoard = fish.map(f => f.letter);
+    if (!onBoard.includes(need()) || Math.random() < 0.3) return need();
+    const pool = target.concat(pick(CONSONANTS.concat(VOWELS), 4)).filter(l => l !== need());
+    return pick(pool,1)[0];
+  };
+  const spawn = (row, fresh) => {
+    const W = lake.clientWidth, H = lake.clientHeight;
+    const dir = Math.random() < 0.5 ? 1 : -1;
+    const el = document.createElement('button'); el.className = 'fish';
+    const f = {el, row, dir, speed: 38 + Math.random()*34, letter: newLetter(), x: 0, y: 0};
+    f.x = fresh ? 20 + Math.random()*(W - 100) : (dir > 0 ? -90 : W + 10);
+    f.y = 14 + row * ((H - 70) / (rows - 1));
+    el.innerHTML = `<span class="fb" style="transform:scaleX(${-dir})">🐟</span><span class="fl">${f.letter}</span>`;
+    el.setAttribute('aria-label', 'Peixe ' + f.letter);
+    el.onclick = () => tap(f);
+    lake.appendChild(el); fish[row] = f;
+  };
+  const tap = f => {
+    if (done || f.caught) return;
+    if (f.letter === need()){
+      f.caught = true; f.el.classList.add('caught');
+      const k = got.length; got.push(f.letter);
+      const slot = document.getElementById('fs' + k); slot.textContent = f.letter; slot.classList.add('on');
+      tone([520, 780, 1040], .07, 'triangle', .1); speak(letterName(f.letter));
+      setTimeout(() => { f.el.remove(); if (!done) spawn(f.row, false); }, 500);
+      if (got.length === target.length){ done = true; stopLoop(); nextRound(`Você pescou ${word.w.toLowerCase()}!`); }
+    } else {
+      G.firstTry = false; boop(); f.el.classList.remove('dive'); void f.el.offsetWidth; f.el.classList.add('dive'); recConf(`pescaria: ${need()}→${f.letter}`);
+      const now = performance.now();
+      if (now - lastTalk > 1800){ lastTalk = now; speak(`Esse é o ${letterName(f.letter)}. Procure o ${letterName(need())}!`); }
+    }
+  };
+  for (let r = 0; r < rows; r++) spawn(r, true);
+  startLoop(dt => {
+    const W = lake.clientWidth;
+    for (const f of fish){
+      if (!f || f.caught) continue;
+      f.x += f.dir * f.speed * dt;
+      f.el.style.transform = `translate(${f.x}px, ${f.y + Math.sin((f.x + f.row*40)/40)*4}px)`;
+      if ((f.dir > 0 && f.x > W + 10) || (f.dir < 0 && f.x < -100)){ f.el.remove(); spawn(f.row, false); }
+    }
+  });
+}
+
 // ---------- game ----------
 let G = null;
 function start(lv, pack){
+  if (lv === 7 && !pack) return modeMenu('Corrida da Pipoca', RACE_MODES, m => start(7, m), 'Escolha a corrida!');
+  if (lv === 11) return pack ? memStart(pack) : modeMenu('Jogo da memória', MEM_MODES, m => start(11, m), 'Escolha o jogo da memória!');
+  if (lv >= 7){
+    const gen = {7: () => raceRounds(pack), 8: () => pick(ALL_WORDS().filter(w => w.s.length <= 4), ROUNDS).sort((a,b) => a.s.length - b.s.length),
+      9: rhymeRounds, 10: feedRounds, 12: () => pick(ALL_WORDS().filter(w => w.s.length >= 2 && w.s.length <= 4), ROUNDS).sort((a,b) => a.s.length - b.s.length),
+      13: traceRounds, 14: fishRounds}[lv];
+    G = {lv, pack, words: gen(), i:0, busy:false, back: gamesMenu};
+    return round();
+  }
   const L1 = WORDS.filter(w=>w.lv===1), L2 = WORDS.filter(w=>w.lv===2), L3 = WORDS.filter(w=>w.lv===3);
   let words;
   if (lv===1) words = pick(L1.concat(L2), ROUNDS);
@@ -775,7 +1377,7 @@ function start(lv, pack){
   else if (lv===2) words = shuffle(pick(L1,3).concat(pick(L2,2)));
   else words = shuffle(pick(L1,2).concat(pick(L2,2), pick(L3,1)));
   if (lv >= 4) words = vowelRounds(lv);
-  G = {lv, pack, words, i:0, busy:false};
+  G = {lv, pack, words, i:0, busy:false, back: lv >= 4 ? vowelMenu : (lv === 2 && pack ? packPicker : home)};
   round();
 }
 function bar(){
@@ -786,7 +1388,7 @@ function bar(){
   </div>`;
 }
 function wireBar(say){
-  document.getElementById('back').onclick = () => { if (hasTTS) speechSynthesis.cancel(); home(); };
+  document.getElementById('back').onclick = () => { if (hasTTS) speechSynthesis.cancel(); ((G && G.back) || home)(); };
   document.getElementById('ouvir').onclick = say;
 }
 function success(word, petEl){
@@ -795,7 +1397,7 @@ function success(word, petEl){
   setTimeout(() => speak(PRAISE[Math.floor(Math.random()*PRAISE.length)] + ' ' + wordSay(word) + '!'), 150);
   setTimeout(() => { G.i++; G.busy = false; G.i < G.words.length ? round() : reward(); }, 2100);
 }
-function round(){ G.firstTry = true; ({1:roundLetter, 2:roundBuild, 3:roundRead, 4:roundMatch, 5:roundBalloons, 6:roundHunt})[G.lv](G.words[G.i]); }
+function round(){ G.firstTry = true; ({1:roundLetter, 2:roundBuild, 3:roundRead, 4:roundMatch, 5:roundBalloons, 6:roundHunt, 7:roundRace, 8:roundDrum, 9:roundRhyme, 10:roundFeed, 12:roundTrain, 13:roundTrace, 14:roundFish})[G.lv](G.words[G.i]); }
 
 function roundLetter(word){
   const first = word.w[0];
@@ -1061,7 +1663,7 @@ function parents(){
     <div class="panel block">
       <h3>Resumo</h3>
       <p>${data.sessions} sessões concluídas · última em ${last} · ${data.stickers.length} de ${WORDS.length} bichinhos.<br>
-      Estrelas: Letrinhas ${data.stars[1]||0}, Monta-palavra ${data.stars[2]||0}, Eu leio! ${data.stars[3]||0}.<br>Vogais: Ligar ${data.stars[4]||0}, Estoura-balões ${data.stars[5]||0}, Caça-vogais ${data.stars[6]||0}.</p>
+      Estrelas: Letrinhas ${data.stars[1]||0}, Monta-palavra ${data.stars[2]||0}, Eu leio! ${data.stars[3]||0}.<br>Vogais: Ligar ${data.stars[4]||0}, Estoura-balões ${data.stars[5]||0}, Caça-vogais ${data.stars[6]||0}.<br>Brincadeiras: ${GAMES.map(g => g.name + ' ' + (data.stars[g.lv]||0)).join(', ')}.</p>
       <p>Cada sessão tem ${ROUNDS} rodadas, cerca de 3 a 5 minutos. Uma ou duas por dia costuma render mais do que jogar muito de uma vez.</p>
     </div>
     <div class="panel block">
@@ -1109,6 +1711,7 @@ function parents(){
   };
 }
 
+window.__zooState = () => G; // usado só nos testes automáticos
 home();
 })();
 </script>
