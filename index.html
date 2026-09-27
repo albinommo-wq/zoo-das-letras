@@ -125,6 +125,32 @@ h1 span{color:var(--berry)}
 .small-btn{padding:10px 14px; font-size:15px; font-weight:700; align-self:flex-start}
 .danger{color:var(--berryD)}
 
+/* Vogais */
+.story-card.vog{background:var(--grass); box-shadow:0 5px 0 var(--ink)}
+.story-card.vog:active{box-shadow:0 1px 0 var(--ink)}
+.vrow{display:grid; grid-template-columns:repeat(5,1fr); gap:8px}
+.vrow button{height:72px; font-weight:700; font-size:40px}
+.match{position:relative; display:grid; grid-template-columns:1fr 1fr; column-gap:48px; padding:18px 14px}
+.match .col{display:flex; flex-direction:column; gap:14px; position:relative; z-index:1}
+.mv{height:92px; font-weight:700; font-size:54px}
+.mp{height:92px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; font-size:46px; line-height:1}
+.mp .wl{font-size:15px; font-weight:700; letter-spacing:2px; font-family:var(--read)}
+.mp .wl b{color:var(--berry)}
+.msel{background:var(--sun)!important}
+.mdone{background:#D6F2E3!important; pointer-events:none}
+svg.lines{position:absolute; inset:0; width:100%; height:100%; pointer-events:none; overflow:visible; z-index:0}
+svg.lines line{stroke:var(--grass); stroke-width:6; stroke-linecap:round}
+.balloons{display:grid; grid-template-columns:repeat(3,1fr); gap:18px 14px; padding:10px 6px 22px}
+.bal{aspect-ratio:1/1.18; max-width:100%; border-radius:50% 50% 46% 46%; border:3px solid var(--ink); display:grid; place-items:center;
+  font-weight:700; font-size:42px; color:#fff; position:relative; animation:bob 2.8s ease-in-out infinite; font-family:var(--read)}
+.bal::after{content:""; position:absolute; bottom:-16px; left:50%; width:2px; height:14px; background:var(--ink)}
+.bal.popped{animation:popout .35s forwards; pointer-events:none}
+@keyframes popout{to{transform:scale(1.7); opacity:0}}
+.target{display:flex; align-items:center; justify-content:center; gap:14px}
+.target .bigv{font-family:var(--read); font-weight:700; font-size:72px; line-height:1; color:var(--berry)}
+.target .cnt{font-family:var(--display); font-weight:800; font-size:22px}
+.hunt{display:flex; gap:8px; flex-wrap:wrap; justify-content:center}
+.hunt button{min-width:52px; height:74px; padding:0 6px; font-weight:700; font-size:42px}
 /* Stories */
 .story-card{display:flex; align-items:center; gap:14px; padding:16px; width:100%; text-align:left; background:var(--ink); color:#fff; box-shadow:0 5px 0 var(--berry)}
 .story-card:active{box-shadow:0 1px 0 var(--berry)}
@@ -513,6 +539,10 @@ function home(){
       <div class="ico">📖</div>
       <div><div class="t">Histórias da Pipoca</div><div class="d">Ouça a aventura e salve os bichos</div></div>
     </button>
+    <button class="story-card vog block press" id="vogais">
+      <div class="ico">🅰️</div>
+      <div><div class="t">Mundo das Vogais</div><div class="d">A, E, I, O, U em 3 brincadeiras</div></div>
+    </button>
     <div class="prompt" style="text-align:left">Treino livre</div>
     <div class="levels">
       ${LEVELS.map(l => `<button class="lvl block press l${l.id}" data-lv="${l.id}">
@@ -528,6 +558,7 @@ function home(){
   $app.querySelectorAll('.lvl').forEach(b => b.onclick = () => { tick(); +b.dataset.lv === 2 ? packPicker() : start(+b.dataset.lv); });
   document.getElementById('zoo').onclick = () => { tick(); zoo(); };
   document.getElementById('stories').onclick = () => { tick(); unlockAudio(); storyList(); };
+  document.getElementById('vogais').onclick = () => { tick(); vowelMenu(); };
   const p = document.getElementById('pais'); let timer;
   const down = () => { p.classList.add('holding'); timer = setTimeout(() => { p.classList.remove('holding'); parents(); }, 1200); };
   const up = () => { p.classList.remove('holding'); clearTimeout(timer); };
@@ -581,6 +612,156 @@ function packPicker(){
   $app.querySelectorAll('[data-p]').forEach(b => b.onclick = () => { tick(); start(2, b.dataset.p); });
 }
 
+// ---------- Mundo das Vogais ----------
+const VOWELS = ['A','E','I','O','U'];
+const VNAME = {A:'á', E:'é', I:'i', O:'ó', U:'u'};
+const base = c => c.normalize('NFD')[0];
+const isVowel = c => VOWELS.includes(base(c));
+const VWORDS = {
+  A: [W('ABELHA',[],'🐝','a'), W('ARARA',[],'🦜','a'), W('AVIÃO',[],'✈️','o'), W('ABACAXI',[],'🍍','o'), W('ARANHA',[],'🕷️','a'), W('ANEL',[],'💍','o')],
+  E: [W('ELEFANTE',[],'🐘','o'), W('ESTRELA',[],'⭐','a'), W('ESQUILO',[],'🐿️','o'), W('ENVELOPE',[],'✉️','o')],
+  I: [W('ILHA',[],'🏝️','a'), W('IGREJA',[],'⛪','a'), W('IOIÔ',[],'🪀','o'), W('ÍMÃ',[],'🧲','o')],
+  O: [W('OVO',[],'🥚','o'), W('OVELHA',[],'🐑','a'), W('ÓCULOS',[],'👓','o'), W('ONÇA',[],'🐆','a'), W('ORELHA',[],'👂','a')],
+  U: [W('UVA',[],'🍇','a'), W('URSO',[],'🐻','o'), W('UNICÓRNIO',[],'🦄','o'), W('UNHA',[],'💅','a')],
+};
+const VACTS = [
+  {lv:4, name:'Ligar', desc:'Ligue a vogal ao desenho', ico:'🔗'},
+  {lv:5, name:'Estoura-balões', desc:'Ouça e estoure a vogal certa', ico:'🎈'},
+  {lv:6, name:'Caça-vogais', desc:'Ache as vogais da palavra', ico:'🔍'},
+];
+function vowelMenu(){
+  h(`<div class="screen">
+    <div class="head"><button class="round-btn block press" id="back" aria-label="Voltar">←</button><h2>Mundo das Vogais</h2></div>
+    <div class="prompt" style="text-align:left">Toque para ouvir</div>
+    <div class="vrow">${VOWELS.map(v => `<button class="block press" data-v="${v}">${v}</button>`).join('')}</div>
+    <div class="levels">${VACTS.map(a => `<button class="lvl block press l2" data-lv="${a.lv}">
+      <div class="ico" style="font-size:32px">${a.ico}</div>
+      <div><div class="t">${a.name}</div><div class="d">${a.desc}</div></div>
+      <div class="stars">⭐ ${data.stars[a.lv]||0}</div></button>`).join('')}</div>
+  </div>`);
+  speak('Estas são as vogais: a, e, i, o, u. Toque numa delas para ouvir, ou escolha uma brincadeira!');
+  document.getElementById('back').onclick = home;
+  $app.querySelectorAll('.vrow button').forEach(b => b.onclick = () => {
+    const v = b.dataset.v, w = VWORDS[v][0]; speak(`${VNAME[v]}... ${VNAME[v]}, de ${w.w.toLowerCase()}!`);
+    b.classList.remove('shake'); void b.offsetWidth;
+  });
+  $app.querySelectorAll('.lvl').forEach(b => b.onclick = () => { tick(); start(+b.dataset.lv); });
+}
+function vowelRounds(lv){
+  if (lv === 4) return Array.from({length:ROUNDS}, () => pick(VOWELS, 3).map(v => ({v, word: pick(VWORDS[v],1)[0]})));
+  if (lv === 5) return shuffle(VOWELS);
+  return pick(ALL_WORDS().filter(w => w.w.length <= 7), ROUNDS);
+}
+function nextRound(text){
+  G.busy = true; ding(); confetti();
+  setTimeout(() => speak(text), 150);
+  setTimeout(() => { G.i++; G.busy = false; G.i < G.words.length ? round() : reward(); }, 2300);
+}
+
+function roundMatch(set){
+  const vs = shuffle(set.map(x => x.v)), ps = shuffle(set);
+  let selV = null, selP = null, done = 0;
+  const say = () => speak('Ligue cada vogal ao desenho que começa com ela.');
+  h(`<div class="screen">${bar()}
+    <div class="prompt">Ligue cada vogal ao desenho que começa com ela</div>
+    <div class="match block" id="board">
+      <svg class="lines" id="lines" aria-hidden="true"></svg>
+      <div class="col">${vs.map(v => `<button class="mv block press" data-v="${v}">${v}</button>`).join('')}</div>
+      <div class="col">${ps.map(x => `<button class="mp block press" data-v="${x.v}" aria-label="${esc(x.word.w.toLowerCase())}"><span>${x.word.e}</span><span class="wl" hidden></span></button>`).join('')}</div>
+    </div>
+  </div>`);
+  wireBar(say); say();
+  const board = document.getElementById('board'), svg = document.getElementById('lines');
+  const clear = () => { $app.querySelectorAll('.msel').forEach(e => e.classList.remove('msel')); selV = selP = null; };
+  const tryMatch = () => {
+    if (!selV || !selP) return;
+    const v = selV.dataset.v, x = ps.find(p => p.v === selP.dataset.v), word = x.word;
+    if (base(word.w[0]) === v){
+      const bb = board.getBoundingClientRect(), a = selV.getBoundingClientRect(), b = selP.getBoundingClientRect();
+      const ln = document.createElementNS('http://www.w3.org/2000/svg','line');
+      ln.setAttribute('x1', a.right - bb.left); ln.setAttribute('y1', a.top + a.height/2 - bb.top);
+      ln.setAttribute('x2', b.left - bb.left); ln.setAttribute('y2', b.top + b.height/2 - bb.top);
+      svg.appendChild(ln);
+      const wl = selP.querySelector('.wl'); wl.innerHTML = `<b>${esc(word.w[0])}</b>${esc(word.w.slice(1))}`; wl.hidden = false;
+      selV.classList.add('mdone'); selP.classList.add('mdone'); tick();
+      speak(`${VNAME[v]}, de ${word.w.toLowerCase()}!`);
+      clear(); done++;
+      if (done === set.length) setTimeout(() => nextRound('Muito bem! Você ligou todas!'), 1300);
+    } else {
+      G.firstTry = false; boop(); shakeEl(selV); shakeEl(selP); recConf(`vogais: ${base(word.w[0])}→${v}`);
+      speak(`Escuta: ${word.w.toLowerCase()}... ${word.w.toLowerCase()}. Tenta de novo!`);
+      clear();
+    }
+  };
+  $app.querySelectorAll('.mv').forEach(b => b.onclick = () => {
+    if (G.busy) return; $app.querySelectorAll('.mv.msel').forEach(e => e.classList.remove('msel'));
+    selV = b; b.classList.add('msel'); speak(VNAME[b.dataset.v]); tryMatch();
+  });
+  $app.querySelectorAll('.mp').forEach(b => b.onclick = () => {
+    if (G.busy) return; $app.querySelectorAll('.mp.msel').forEach(e => e.classList.remove('msel'));
+    selP = b; b.classList.add('msel'); if (!selV) speak(ps.find(p => p.v === b.dataset.v).word.w.toLowerCase()); tryMatch();
+  });
+}
+
+function roundBalloons(v){
+  const others = VOWELS.filter(x => x !== v);
+  const letters = shuffle([v, v, v].concat(Array.from({length:6}, () => pick(others,1)[0])));
+  const cols = ['#EF5B8C','#2FA56A','#4FA3D9','#E08A00','#8A63D2'];
+  let found = 0, warned = false;
+  const say = () => speak(`Estoure os balões com a letra ${VNAME[v]}!`);
+  h(`<div class="screen">${bar()}
+    <div class="stage block" style="padding:12px">
+      <div class="target"><div class="bigv">${v}</div><div class="cnt" id="cnt">0 de 3</div></div>
+      <div class="prompt">Estoure os balões com a letra ${v}</div>
+    </div>
+    <div class="balloons">${letters.map((l,i) => `<button class="bal" data-l="${l}" style="background:${cols[i % cols.length]}; animation-delay:${(i%3)*0.4 + Math.floor(i/3)*0.2}s" aria-label="Balão ${l}">${l}</button>`).join('')}</div>
+  </div>`);
+  wireBar(say); say();
+  $app.querySelectorAll('.bal').forEach(b => b.onclick = () => {
+    if (G.busy || b.classList.contains('popped')) return;
+    const l = b.dataset.l;
+    if (l === v){
+      b.classList.add('popped'); tone([880,1320], .07, 'square', .08); found++;
+      document.getElementById('cnt').textContent = `${found} de 3`;
+      if (found === 3) nextRound(`Isso! Você achou todos os ${VNAME[v]}!`); else speak(VNAME[v]);
+    } else {
+      G.firstTry = false; boop(); shakeEl(b); recConf(`balões: ${v}→${l}`);
+      speak(warned ? `Esse é o ${VNAME[l]}.` : `Esse é o ${VNAME[l]}. Procure o ${VNAME[v]}!`); warned = true;
+    }
+  });
+}
+
+function roundHunt(word){
+  const letters = word.w.split('');
+  const need = letters.filter(isVowel).length;
+  let got = 0, warned = false;
+  const say = () => speak(`Toque em todas as vogais de ${word.w.toLowerCase()}.`);
+  h(`<div class="screen">${bar()}
+    <div class="stage block">
+      <button class="pet" id="pet" aria-label="Ouvir">${word.e}</button>
+      <div class="prompt">Toque em todas as vogais</div>
+      <div class="target"><div class="cnt" id="cnt">0 de ${need}</div></div>
+    </div>
+    <div class="hunt">${letters.map((c,i) => `<button class="block press" data-i="${i}">${esc(c)}</button>`).join('')}</div>
+  </div>`);
+  wireBar(say); document.getElementById('pet').onclick = say; say();
+  $app.querySelectorAll('.hunt button').forEach(b => b.onclick = () => {
+    if (G.busy || b.classList.contains('right')) return;
+    const c = letters[+b.dataset.i];
+    if (isVowel(c)){
+      b.classList.add('right'); tick(); got++; speak(VNAME[base(c)]);
+      document.getElementById('cnt').textContent = `${got} de ${need}`;
+      if (got === need){
+        const pet = document.getElementById('pet'); pet.classList.add('pop');
+        nextRound(`Isso! ${word.w.toLowerCase()} tem ${need === 1 ? 'uma vogal' : need + ' vogais'}!`);
+      }
+    } else {
+      G.firstTry = false; boop(); shakeEl(b); recConf(`caça-vogais: ${c}`);
+      speak(warned ? 'Essa não é vogal.' : 'Essa não é vogal. As vogais são: a, e, i, o, u.'); warned = true;
+    }
+  });
+}
+
 // ---------- game ----------
 let G = null;
 function start(lv, pack){
@@ -593,6 +774,7 @@ function start(lv, pack){
   }
   else if (lv===2) words = shuffle(pick(L1,3).concat(pick(L2,2)));
   else words = shuffle(pick(L1,2).concat(pick(L2,2), pick(L3,1)));
+  if (lv >= 4) words = vowelRounds(lv);
   G = {lv, pack, words, i:0, busy:false};
   round();
 }
@@ -613,7 +795,7 @@ function success(word, petEl){
   setTimeout(() => speak(PRAISE[Math.floor(Math.random()*PRAISE.length)] + ' ' + wordSay(word) + '!'), 150);
   setTimeout(() => { G.i++; G.busy = false; G.i < G.words.length ? round() : reward(); }, 2100);
 }
-function round(){ G.firstTry = true; ({1:roundLetter, 2:roundBuild, 3:roundRead})[G.lv](G.words[G.i]); }
+function round(){ G.firstTry = true; ({1:roundLetter, 2:roundBuild, 3:roundRead, 4:roundMatch, 5:roundBalloons, 6:roundHunt})[G.lv](G.words[G.i]); }
 
 function roundLetter(word){
   const first = word.w[0];
@@ -879,7 +1061,7 @@ function parents(){
     <div class="panel block">
       <h3>Resumo</h3>
       <p>${data.sessions} sessões concluídas · última em ${last} · ${data.stickers.length} de ${WORDS.length} bichinhos.<br>
-      Estrelas: Letrinhas ${data.stars[1]||0}, Monta-palavra ${data.stars[2]||0}, Eu leio! ${data.stars[3]||0}.</p>
+      Estrelas: Letrinhas ${data.stars[1]||0}, Monta-palavra ${data.stars[2]||0}, Eu leio! ${data.stars[3]||0}.<br>Vogais: Ligar ${data.stars[4]||0}, Estoura-balões ${data.stars[5]||0}, Caça-vogais ${data.stars[6]||0}.</p>
       <p>Cada sessão tem ${ROUNDS} rodadas, cerca de 3 a 5 minutos. Uma ou duas por dia costuma render mais do que jogar muito de uma vez.</p>
     </div>
     <div class="panel block">
